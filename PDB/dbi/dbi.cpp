@@ -1281,13 +1281,13 @@ IMOD DBI1::imodForModNameW(const wchar_t* szModule, const wchar_t* szObjFile)
     return imodNil;
 }
 
-//BOOL DBI1::openModByImod(IMOD imod, OUT Mod** ppmod)
-//{
-//    unimplemented;
-//    return false;
-//}
+BOOL DBI1::openModByImod(IMOD imod, OUT Mod** ppmod)
+{
+    unimplemented;
+    return false;
+}
 
-#if 1
+#if 0
 BOOL DBI1::openModByImod(IMOD imod, OUT Mod** ppmod)
 {
     MTS_PROTECT(m_csForMods);

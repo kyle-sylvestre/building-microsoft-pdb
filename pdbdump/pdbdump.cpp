@@ -23,7 +23,7 @@
 #define STRICT
 #include "windows.h"
 
-#include "win32_types.h"
+#include "missing_impl.h"
 #include "pdb.h"
 #include "cvr.h"
 #include "cvinfo.h" // @@@
@@ -32,7 +32,6 @@
 #include "pdbtypdefs.h"
 #include "safestk.h"
 #include "szst.h"
-#include "win32_types.h"
 
 typedef USHORT IMOD;
 

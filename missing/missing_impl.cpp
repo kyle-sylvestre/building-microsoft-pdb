@@ -9,6 +9,8 @@
 #include <Windows.h>
 #include "cvdump.h"
 
+BYTE RecBuf[128];
+
 
 BOOL IS_SZ_FORMAT_PDB(PDB1 *pdb) 
 {

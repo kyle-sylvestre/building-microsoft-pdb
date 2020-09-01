@@ -4107,7 +4107,7 @@ typedef struct FRAMEPROCSYM {
     } flags;
 } FRAMEPROCSYM;
 
-#if 0 //  __cplusplus
+#if __cplusplus
 namespace CodeViewInfo 
 {
 __inline unsigned short ExpandEncodedBasePointerReg(unsigned machineType, unsigned encodedFrameReg) 

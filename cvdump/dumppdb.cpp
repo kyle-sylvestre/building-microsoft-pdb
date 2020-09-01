@@ -7,7 +7,7 @@
 *
 *
 ***********************************************************************/
-#include "win32_types.h"
+#include "missing_impl.h"
 #include "pdb.h"
 #include "windows.h"
 //#include "array.h" //@@@

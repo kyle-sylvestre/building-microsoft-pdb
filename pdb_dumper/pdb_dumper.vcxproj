@@ -140,8 +140,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\missing\missing_impl.cpp" />
-    <ClCompile Include="..\missing\sha256.cpp" />
-    <ClCompile Include="..\pdbtest\pdbtest.cpp" />
+    <ClCompile Include="..\pdbdump\pdbdump.cpp" />
     <ClCompile Include="..\PDB\dbi\cbind.cpp" />
     <ClCompile Include="..\PDB\dbi\dbi.cpp" />
     <ClCompile Include="..\PDB\dbi\dbicommon.cpp" />
@@ -150,7 +149,7 @@
     <ClCompile Include="..\PDB\dbi\heap.cpp" />
     <ClCompile Include="..\PDB\dbi\locator.cpp" />
     <ClCompile Include="..\PDB\dbi\mli.cpp" />
-    <ClCompile Include="..\PDB\dbi\mod.cpp" />
+    <ClCompile Include="..\PDB\dbi\modcommon.cpp" />
     <ClCompile Include="..\PDB\dbi\pdb.cpp" />
     <ClCompile Include="..\PDB\dbi\pdbcommon.cpp" />
     <ClCompile Include="..\PDB\dbi\pdbmain.cpp" />
@@ -163,29 +162,6 @@
     <ClCompile Include="..\PDB\msf\msf.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\cvdump\src\crc32.h" />
-    <ClInclude Include="..\cvdump\src\cvconst.h" />
-    <ClInclude Include="..\cvdump\src\cvdump.h" />
-    <ClInclude Include="..\cvdump\src\cvexefmt.h" />
-    <ClInclude Include="..\cvdump\src\cvinfo.h" />
-    <ClInclude Include="..\cvdump\src\cvtdef.h" />
-    <ClInclude Include="..\cvdump\src\debsym.h" />
-    <ClInclude Include="..\cvdump\src\output.h" />
-    <ClInclude Include="..\cvdump\src\pdb.h" />
-    <ClInclude Include="..\cvdump\src\symrec.h" />
-    <ClInclude Include="..\cvdump\src\typeinfo.h" />
-    <ClInclude Include="..\missing\armregs.h" />
-    <ClInclude Include="..\missing\arm64regs.h" />
-    <ClInclude Include="..\missing\crefobj.h" />
-    <ClInclude Include="..\missing\custom.h" />
-    <ClInclude Include="..\missing\cvr.h" />
-    <ClInclude Include="..\missing\map_t.h" />
-    <ClInclude Include="..\missing\mod_custom.h" />
-    <ClInclude Include="..\missing\prefast.h" />
-    <ClInclude Include="..\missing\ref.h" />
-    <ClInclude Include="..\missing\safestk.h" />
-    <ClInclude Include="..\missing\util_misc.h" />
-    <ClInclude Include="..\missing\verstamp.h" />
     <ClInclude Include="..\missing\missing_impl.h" />
     <ClInclude Include="..\PDB\dbi\dbi.h" />
     <ClInclude Include="..\PDB\dbi\dbiimpl.h" />
@@ -238,6 +214,7 @@
     <ClInclude Include="..\PDB\include\srccommon.h" />
     <ClInclude Include="..\PDB\include\srcimpl.h" />
     <ClInclude Include="..\PDB\include\StrConvBuf.h" />
+    <ClInclude Include="..\PDB\include\symtypeutils.h" />
     <ClInclude Include="..\PDB\include\syncro.h" />
     <ClInclude Include="..\PDB\include\SysPage.h" />
     <ClInclude Include="..\PDB\include\szcanon.h" />

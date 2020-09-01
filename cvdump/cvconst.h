@@ -23,8 +23,6 @@
 #ifndef _CVCONST_H_
 #define _CVCONST_H_
 
-namespace sdf{
-
 //      Enumeration for function call type
 
 
@@ -3736,5 +3734,5 @@ typedef enum CV_HLSLMemorySpace_e
 
     CV_HLSL_MEMSPACE_MAX          = 0x0F,
 } CV_HLSLMemorySpace_e;
-}
+
 #endif
