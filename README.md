@@ -1,7 +1,7 @@
 # BUILDING THE SOLUTION
--Only works on x64 Debug for now
--To build cvdump.exe, add all source files from cvdump folder and remove pdbdump.cpp from solution
--To build pdbdump.exe, ensure pdbdump is the only file with wmain (project is initially configured for building pdbdump.exe)
+-Only works on x64 Debug for now <br />
+-To build cvdump.exe, add all source files from cvdump folder and remove pdbdump.cpp from solution <br />
+-To build pdbdump.exe, ensure pdbdump is the only file with wmain (project is initially configured for building pdbdump.exe) <br />
 
 
 
