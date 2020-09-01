@@ -1,3 +1,12 @@
+# BUILDING THE SOLUTION
+-Only works on x64 Debug for now
+-To build cvdump.exe, add all source files from cvdump folder and remove pdbdump.cpp from solution
+-To build pdbdump.exe, ensure pdbdump is the only file with wmain (project is initially configured for building pdbdump.exe)
+
+
+
+
+
 # microsoft-pdb
 This repo contains information from Microsoft about the PDB (Program Database) 
 [Symbol File](https://msdn.microsoft.com/en-us/library/windows/desktop/aa363368(v=vs.85).aspx) format.
