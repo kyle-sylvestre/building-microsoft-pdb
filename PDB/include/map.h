@@ -13,6 +13,10 @@
 
 #include "mts.h"
 
+#include "trace.h"
+
+#include <tchar.h>
+
 #define self (*this)
 
 //
@@ -36,6 +40,7 @@
 #define hcLPtr 7
 
 namespace pdb_internal {
+
 
 const size_t    HASH_MAX = 0xffff;
 const size_t    LHASH_MAX = 0xffffffff;
@@ -345,7 +350,8 @@ BOOL Map<D,R,H,C,CS>::add(D d, R r) {
         return FALSE;
     }
 
-    debug(R rCheck);
+    R rCheck;
+    //debug(R rCheck); @@@
     postcondition(map(d, &rCheck) && r == rCheck);
     postcondition(fullInvariants());
     return TRUE;
@@ -375,7 +381,9 @@ BOOL Map<D,R,H,C,CS>::add2(D d, const R & r) {
         return FALSE;
     }
 
-    debug(R rCheck);
+    // @@@
+    R rCheck;
+    debug(rCheck);
     postcondition(map(d, &rCheck) && r == rCheck);
     postcondition(fullInvariants());
     return TRUE;
@@ -665,7 +673,6 @@ unsigned Map<D,R,H,C,CS>::count() const {
     assert(partialInvariants());
     return cdr;
 }
-
 
 // EnumMap must continue to enumerate correctly in the presence
 // of Map<foo>::remove() being called in the midst of the enumeration.

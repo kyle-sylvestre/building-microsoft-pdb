@@ -1,11 +1,4 @@
 #pragma once
-#if !defined verify
-#ifdef _DEBUG
-#define verify(x)       assert((x))
-#else
-#define verify(x)       (x)
-#endif
-#endif  // verify
 
 #if defined(MAPPEDMEM_LOGGING)
 

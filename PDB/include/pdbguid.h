@@ -1,3 +1,3 @@
 #pragma once
 #include <rpc.h>            // definition for UUID
-BOOL FUuidCreate(UUID *);
+inline BOOL FUuidCreate(UUID *uuid) { return false; }

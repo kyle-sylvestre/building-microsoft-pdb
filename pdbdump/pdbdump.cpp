@@ -23,13 +23,16 @@
 #define STRICT
 #include "windows.h"
 
+#include "win32_types.h"
 #include "pdb.h"
 #include "cvr.h"
+#include "cvinfo.h" // @@@
 #include "mdalign.h"
 #include "msf.h"
 #include "pdbtypdefs.h"
 #include "safestk.h"
 #include "szst.h"
+#include "win32_types.h"
 
 typedef USHORT IMOD;
 
@@ -61,14 +64,11 @@ const wchar_t szUsage[] =
 #define abstract
 
 abstract class Idx;
-    abstract class IdxVal;
-        class IdxSingle;
-        class IdxRange;
-            class IdxAll;
-        class IdxSeq;
-
-typedef unsigned long   ulong;
-typedef unsigned short  ushort;
+abstract class IdxVal;
+class IdxSingle;
+class IdxRange;
+class IdxAll;
+class IdxSeq;
 
 MSF *pmsf;
 PDB *ppdb;
@@ -94,7 +94,7 @@ void    dumpLinesSz(DBI *pdbi, const wchar_t *sz);
 bool    dumpPublics(DBI *pdbi);
 bool    checkAddrsToPublics(DBI *pdbi);
 bool    dumpSymbols(Mod *pmod);
-void    dumpSymbol(SYMTYPE *);
+void    dumpSymbol(SYMTYPE *psym);
 void    dumpTpiHdr(MSF *pmsf, TPI *ptpi, const wchar_t *sz, bool fId);
 void    dumpTpiSz(TPI *ptpi, _Inout_ wchar_t *sz, bool fId);
 void    dumpTpiLastSz(TPI *ptpi, bool fId);
@@ -383,9 +383,108 @@ enum {
     asC
 } Style;
 
+//cassert(rmj < 128);
+//cassert(rmm < 256);
+//cassert(rup < 65536);
+//cassert(rbld < 65536);
+void DumpPdbModules(DBI *pdbi)
+{
+    Mod *pmod = NULL;
+    int imod = 0;
+    int iModToList = 1;
+    while (pdbi->QueryNextMod(pmod, &pmod) && pmod) {
+        USHORT imod;
+
+        if (!pmod->QueryImod(&imod)) {
+            continue;
+        }
+
+        if ((iModToList != 0) && (imod != iModToList)) {
+            continue;
+        }
+
+        wprintf(L"%04X", imod);
+
+        wchar_t wszFile[PDB_MAX_PATH];
+        long cb = _countof(wszFile);
+
+        if (!pmod->QueryFileW(wszFile, &cb)) {
+            wprintf(L" *\n");
+        }
+
+        else {
+            wprintf(L" \"%s\"", wszFile);
+        }
+
+        wchar_t wszName[PDB_MAX_PATH];
+        cb = _countof(wszName);
+
+        if (!pmod->QueryNameW(wszName, &cb)) {
+            wprintf(L" *\n");
+        }
+
+        else if (wcscmp(wszFile, wszName) == 0) {
+            // If file name matches module name that this isn't a library
+        }
+
+        else {
+            wprintf(L" \"%s\"", wszName);
+        }
+
+        wprintf(L"\n");
+    }
+}
 
 int __cdecl wmain(int iargMax, _In_ wchar_t *rgarg[])
 {
+    // override args for debugging
+    // working options: 
+    //   msf, hdr, strnames, streams, streams all, 
+    //   tpihdr, ipihdr, headers
+
+    const wchar_t *customargs[] = {
+        rgarg[0],
+        L"gorgon.pdb",
+            //L"msf",
+            L"hdr",
+            L"strnames",
+            //L"streams",
+            //L"all",
+        //L"namemap",
+        //L"namemapd",
+        //L"namemapx",
+            //L"tpihdr",
+            //L"ipihdr",
+        //L"types", L"last",
+        //L"ids", ???
+        //L"all", ???
+        //L"src",
+        //L"dbi",
+        //L"records",
+        //L"C",
+        //L"globals",
+        //L"mods",
+        //L"seccontribs",
+        //L"typeservers",
+        //L"check",
+        //L"publics",
+        //L"secmap",
+        //L"files",
+        //L"fpo",
+        //L"pdata",
+        //L"fixup",
+        //L"omapt",
+        //L"omapf",
+        //    L"headers",
+        //L"syms",
+        //L"all",
+        //L"lines",
+        //L"all",
+        L"linkinfo"
+    };
+    rgarg = (wchar_t **)customargs;
+    iargMax = _countof(customargs);
+
 #ifdef  _M_IX86
     // Enable access to the System32 directory without remapping to SysWow64
 
@@ -412,10 +511,13 @@ int __cdecl wmain(int iargMax, _In_ wchar_t *rgarg[])
 
     wchar_t szError[cbErrMax];
 
+    //@@@
     bool fCanHandleDbgData = !PDB::ExportValidateInterface(PDBIntv50a);
+    //bool fCanHandleDbgData = true;
 
     wchar_t szPdbPath[PDB_MAX_PATH];
 
+    // @@@
     if (!PDB::Open2W(szPDBName, pdbRead, &ec, szError, cbErrMax, &ppdb)) {
         if (!PDB::OpenValidate5(szPDBName, NULL, NULL, 0, &ec, szError, cbErrMax, &ppdb)) {
             fatal(L"cannot open %s\n", szPDBName);
@@ -426,8 +528,8 @@ int __cdecl wmain(int iargMax, _In_ wchar_t *rgarg[])
 
     ppdb->OpenTpi(pdbRead, &ptpi);
     ppdb->OpenIpi(pdbRead, &pipi);
-
     MSF_EC msfEc;
+    
 
     if (!(pmsf = MSFOpenW(szPDBName, FALSE, &msfEc))) {
         if (msfEc == MSF_EC_FORMAT) {
@@ -465,8 +567,11 @@ int __cdecl wmain(int iargMax, _In_ wchar_t *rgarg[])
         }
     }
 
+    ppdb->OpenDBI(NULL, pdbRead, &pdbi);
+    
     for (iarg = 2; iarg < iargMax; ++iarg) {
         bool fNotSupported = false;
+        printf("option: %ws\n", rgarg[iarg]);
 
         if (wcscmp(rgarg[iarg], L"msf") == 0) {
             dumpMSF(pmsf, szPDBName);
@@ -1127,7 +1232,7 @@ void dumpMSFByName(MSF *pmsf, PDB *ppdb, const wchar_t *szMSF)
         if (cb != cbNil) {
             ++csn;
             static const wchar_t szFmt[] =
-                L"%4d: %7ld  %s\n"
+                L"%4d: %7ld  %ws\n"
                 ;
 
             wprintf(szFmt, (int)sn, cb, GetStreamName(sn));
@@ -1552,7 +1657,7 @@ void dumpSymbol(SYMTYPE *psym)
         case S_UNAMESPACE:  str = strForSymNYI(psym); break;
     }
 
-    SZ szRecTyp = "???";
+    const char *szRecTyp = "???";
     fGetSymRecTypName(psym, &szRecTyp);
 
     wchar_t szName[2048];
@@ -2878,6 +2983,10 @@ bool dumpSectionHdr (DBI *pdbi)
 
 bool dumpNamemap(PDB *ppdb, bool fUseDecimal)
 {
+    unimplemented;
+    return FALSE;
+
+#if 0
     NameMap *pmap =  NULL;
     EnumNameMap *pe = NULL;
 
@@ -2910,8 +3019,10 @@ bool dumpNamemap(PDB *ppdb, bool fUseDecimal)
     if (pmap) pmap->close();
 
     return true;
-}
 
+
+#endif
+}
 
 bool dumpSrcFormat(BYTE *pb, CB cb)
 {
@@ -2966,7 +3077,11 @@ bool dumpSrcFormat(BYTE *pb, CB cb)
     return (fMD5 || fSHA1);
 }
 
-
+bool dumpSrcHeader(PDB *ppdb)
+{
+    return false;
+}
+#if 0
 bool dumpSrcHeader(PDB *ppdb)
 {
     Src *       psrc = NULL;
@@ -3040,7 +3155,7 @@ bool dumpSrcHeader(PDB *ppdb)
 
     return fRet;
 }
-
+#endif
 
 void dumpText(size_t cb, BYTE *pb)
 {
@@ -3072,18 +3187,18 @@ void dumpText(size_t cb, BYTE *pb)
 }
 
 
-extern "C" void failAssertionFunc(SZ_CONST szAssertFile, SZ_CONST szFunction, int line, SZ_CONST szCond)
-{
-    fwprintf(
-        stderr,
-        L"assertion failure:\n\tfile: %hs,\n\tfunction: %hs,\n\tline: %d,\n\tcondition(%hs)\n\n",
-        szAssertFile,
-        szFunction,
-        line,
-        szCond
-        );
-
-    fflush(stderr);
-
-    __debugbreak();
-}
+//extern "C" void failAssertionFunc(SZ_CONST szAssertFile, SZ_CONST szFunction, int line, SZ_CONST szCond)
+//{
+//    fwprintf(
+//        stderr,
+//        L"assertion failure:\n\tfile: %hs,\n\tfunction: %hs,\n\tline: %d,\n\tcondition(%hs)\n\n",
+//        szAssertFile,
+//        szFunction,
+//        line,
+//        szCond
+//        );
+//
+//    fflush(stderr);
+//
+//    __debugbreak();
+//}

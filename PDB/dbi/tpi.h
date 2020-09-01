@@ -1,7 +1,7 @@
 //////////////////////////////////////////////////////////////////////////////
 // TPI implementation declarations
 
-#include "SymTypeUtils.h"
+//#include "SymTypeUtils.h"
 
 #pragma warning(push)
 #pragma warning(disable:4200)

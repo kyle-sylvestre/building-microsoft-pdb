@@ -155,7 +155,8 @@ private:
     Buffer      bufLines;                   // Used for reading C13 lines with old API
 
     // protected by m_csForC13 (or pdbi1->fWrite)
-    RefBuf      rbufC13Lines;              
+    //RefBuf      rbufC13Lines; @@@
+    Buffer      rbufC13Lines;
     Buffer      bufC13Fpo;
     Buffer      bufC13Strings;
 
@@ -285,9 +286,10 @@ private:
                     IN OUT DWORD*   pcbChksum,              // number of bytes of chksum (in/out)
                     NameMap*        pNameMapIn = NULL
                     );
-    bool fInitRefBuffer(RefBuf *prbuf);
+    //bool fInitRefBuffer(RefBuf *prbuf); @@@
     bool findC13Lines();
-    bool Mod1::fQueryC13LinesBuf(DWORD cb, PB pb, DWORD *pcb, enum DEBUG_S_SUBSECTION_TYPE e);
+    bool fQueryC13LinesBuf(DWORD cb, PB pb, DWORD *pcb, enum DEBUG_S_SUBSECTION_TYPE e);
+    //bool Mod1::fQueryC13LinesBuf(DWORD cb, PB pb, DWORD *pcb, enum DEBUG_S_SUBSECTION_TYPE e);
 
     // Long File name support
     BOOL fConvertSymRecsStToSz(PB pbSrc, CB cbSrc);
@@ -303,7 +305,7 @@ private:
     BOOL QueryFileW(_Out_z_cap_(PDB_MAX_PATH) OUT wchar_t szFile[PDB_MAX_PATH], OUT CB* pcch);
     BOOL QuerySrcFileW(_Out_z_cap_(PDB_MAX_PATH) OUT wchar_t szFile[PDB_MAX_PATH], OUT CB* pcch);
     BOOL QueryPdbFileW(_Out_z_cap_(PDB_MAX_PATH) OUT wchar_t szFile[PDB_MAX_PATH], OUT CB* pcch);
-    BOOL AddPublic2(const char* szPublic, USHORT isect, long off, CV_pubsymflag_t cvpsf =0);
+    BOOL AddPublic2(const char* szPublic, USHORT isect, long off, CV_pubsymflag_t cvpsf = 0);
     void ReportDelayLoadError(DWORD ec, PDelayLoadInfo pdli);
     bool CheckFCreateReader(PB pb, CB cb, IDebugSSectionReader** ppReader, DWORD sig);
     bool CheckFCreateWriter(bool flag, IDebugSSectionWriter** ppWriter, DWORD sig, bool flag2);

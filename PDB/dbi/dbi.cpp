@@ -1,6 +1,8 @@
 //////////////////////////////////////////////////////////////////////////////
 // DBI: Debug Information API Implementation
 
+#include "missing_impl.h"
+
 #include "pdbimpl.h"
 #include "dbiimpl.h"
 #include "cvexefmt.h"
@@ -52,10 +54,14 @@ static inline AGE AgeFromTSRecord(PTYPE ptype)
 // major version is 7 bits (0-127), minor is 8 bits (0-255),
 // build is 16 bits (0-65535) and rbld is 16 bits (0-65535).
 //
+
+// @@@
+
 cassert(rmj < 128);
 cassert(rmm < 256);
 cassert(rup < 65536);
-cassert(rbld < 65536);
+cassert(rbld < 65536); 
+BOOL IS_SZ_FORMAT_PDB(PDB1 *pdb);
 
 const char DBI1::c_szLinkInfoStr[] = "/LinkInfo";
 
@@ -1275,6 +1281,13 @@ IMOD DBI1::imodForModNameW(const wchar_t* szModule, const wchar_t* szObjFile)
     return imodNil;
 }
 
+//BOOL DBI1::openModByImod(IMOD imod, OUT Mod** ppmod)
+//{
+//    unimplemented;
+//    return false;
+//}
+
+#if 1
 BOOL DBI1::openModByImod(IMOD imod, OUT Mod** ppmod)
 {
     MTS_PROTECT(m_csForMods);
@@ -1307,7 +1320,7 @@ BOOL DBI1::openModByImod(IMOD imod, OUT Mod** ppmod)
     *ppmod = pmodi->pmod;
     return TRUE;
 }
-
+#endif 
 BOOL DBI1::DeleteMod(SZ_CONST szModule)
 {
     dassert(szModule);
@@ -2037,6 +2050,7 @@ wchar_t * DBI1::szGetTsInfo(PTYPE pts, wchar_t *szNameBuf, wchar_t *szFullMapped
 
     *pSig70 = SIG70FromTSRecord(pts);
     *pAge = AgeFromTSRecord(pts);
+    
     wchar_t *szTSName = SZNameFromTSRecord(pts, szNameBuf, pts->len);
 
     if (szTSName == NULL) {
@@ -2294,11 +2308,12 @@ BOOL DBI1::fOpenTmts(const wchar_t* wszName, const SIG70& sig70, AGE age, UTFSZ_
     *pptm = 0; // 0 means use 'to' PDB
 
     TPI * ptpi = GetTpi();
+    TPI * pipi = NULL;
     if (ptpi == NULL) {
         goto errorOut;
     }
 
-    TPI * pipi = GetIpi();
+    pipi = GetIpi();
     if (pipi == NULL) {
         // Do nothing.  Old versioned PDB doesn't have ID stream.
     }
@@ -2694,7 +2709,8 @@ BOOL DBI1::fReadSymRec (PSYM psym) {
                 if (!openModByImod(imodForXimod(pRefSym->imod), (Mod **)&pmod)) {
                     return FALSE;
                 }
-                pRefSym->ibSym = pmod->offSymNewForOffSymOld(pRefSym->ibSym, fVC40Offset);
+                unimplemented;
+                //pRefSym->ibSym = pmod->offSymNewForOffSymOld(pRefSym->ibSym, fVC40Offset);
             }
         }
         return TRUE;
@@ -3726,7 +3742,8 @@ BOOL DBI1::QueryTypeServerByPdbUTF8(UTFSZ_CONST szPdb, OUT ITSM* piTsm)
 
 BOOL DBI1::QueryTypeServer(ITSM iTsm, OUT TPI** pptpi)
 {
-#ifdef PDB_TYPESERVER
+//#ifdef PDB_TYPESERVER
+#if 0
     USES_STACKBUFFER(0x400);
 
     if (iTsm < bufTSMap.Length()) {
@@ -3780,8 +3797,8 @@ BOOL DBI1::QueryTypeServer(ITSM iTsm, OUT TPI** pptpi)
         return *pptpi != 0;
     }
 #endif
-    ppdb1->setLastError(EC_NOT_IMPLEMENTED /*, perhaps the name of typeserver will be good */);
-    return FALSE;
+    //ppdb1->setLastError(EC_NOT_IMPLEMENTED /*, perhaps the name of typeserver will be good */);
+    return TRUE;
 }
 
 BOOL DBI1::FindTypeServers(OUT EC* pec, OUT char szError[cbErrMax])

@@ -1,3 +1,5 @@
+#include "missing_impl.h"
+
 #include "pdbimpl.h"
 #include "dbiimpl.h"
 #include <stdlib.h>

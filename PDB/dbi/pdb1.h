@@ -1,6 +1,8 @@
 //////////////////////////////////////////////////////////////////////////////
 // PDB implementation declarations
 
+#include <sal.h>
+
 struct PDBStream {
     IMPV    impv;
     SIG     sig;
@@ -68,10 +70,10 @@ public:
                const char *szMode,
                SIG sigInitial,
                long cbPage,
-               OUT EC *pec,
-               _Out_opt_cap_(cchErrMax) OUT wchar_t *wszError,
+               /*OUT*/EC *pec,
+                /*OUT*/wchar_t *wszError,
                size_t cchErrMax,
-               OUT PDB **pppdb);
+               /*OUT*/PDB **pppdb);
 
     static BOOL
            OpenValidate4(
@@ -80,19 +82,19 @@ public:
                PCSIG70  pcsig70,
                SIG sig,
                AGE age,
-               OUT EC *pec,
-               _Out_opt_cap_(cchErrMax) OUT wchar_t *wszError,
+               /*OUT*/EC *pec,
+                /*OUT*/wchar_t *wszError,
                size_t cchErrMax,
-               OUT PDB **pppdb);
+               /*OUT*/PDB **pppdb);
 
     static BOOL
            OpenNgenPdb(
                const wchar_t *wszNgenImage,
                const wchar_t *swzPdbPath,
-               OUT EC *pec,
-               _Out_opt_cap_(cchErrMax) OUT wchar_t *wszError,
+               /*OUT*/EC *pec,
+                /*OUT*/wchar_t *wszError,
                size_t cchErrMax,
-               OUT PDB **pppdb);
+               /*OUT*/PDB **pppdb);
 
     static BOOL 
             OpenTSPdb(
@@ -101,19 +103,19 @@ public:
                const char *szMode,
                const SIG70& sig,
                AGE age,
-               OUT EC *pec,
-               _Out_opt_cap_(cchErrMax) OUT wchar_t *szError,
+               /*OUT*/EC *pec,
+                /*OUT*/wchar_t *szError,
                size_t cchErrMax,
-               OUT PDB **pppdb);
+               /*OUT*/PDB **pppdb);
     static BOOL
            OpenInStream(
                IStream *pIStream,
                const char *szMode,
                CB cbPage,
-               OUT EC *pec,
-               _Out_opt_cap_(cchErrMax) OUT wchar_t *wszError,
+               /*OUT*/EC *pec,
+                /*OUT*/wchar_t *wszError,
                size_t cchErrMax,
-               OUT PDB **pppdb);
+               /*OUT*/PDB **pppdb);
 
     static BOOL SetPDBCloseTimeout(DWORDLONG t);
     static BOOL CloseAllTimeoutPDB();
@@ -124,18 +126,18 @@ public:
     IMPV QueryImplementationVersion();
     IMPV QueryPdbImplementationVersion();
 
-    SZ   QueryPDBName(_Out_z_cap_(_MAX_PATH) OUT char szPDBName[_MAX_PATH]);
+    SZ   QueryPDBName(/*OUT*/char szPDBName[_MAX_PATH]);
     SIG  QuerySignature();
     AGE  QueryAge();
-    BOOL GetEnumStreamNameMap(OUT Enum** ppenum);
-    BOOL CreateDBI(SZ_CONST szTarget, OUT DBI** ppdbi);
-    BOOL OpenDBI(SZ_CONST szTarget, SZ_CONST szMode, OUT DBI** ppdbi);
+    BOOL GetEnumStreamNameMap(/*OUT*/Enum** ppenum);
+    BOOL CreateDBI(SZ_CONST szTarget, /*OUT*/DBI** ppdbi);
+    BOOL OpenDBI(SZ_CONST szTarget, SZ_CONST szMode, /*OUT*/DBI** ppdbi);
     BOOL OpenTpi(SZ_CONST szMode, TPI** pptpi);
     BOOL OpenIpi(SZ_CONST szMode, TPI** ppipi);
     BOOL Commit();
     BOOL Close();
     BOOL GetRawBytes(PFNfReadPDBRawBytes fSnarfRawBytes);
-    EC QueryLastErrorExW(__out_ecount_opt(cchMax) wchar_t *wszError, size_t cchMax);
+    EC QueryLastErrorExW(wchar_t *wszError, size_t cchMax);
     BOOL QuerySignature2(PSIG70 psig70);
     BOOL ResetGUID(BYTE *pb, DWORD cb);
 
@@ -146,16 +148,16 @@ public:
         void *                  pvClientContext
         );
 
-    wchar_t *QueryPDBNameExW(__out_ecount_opt(cchMax) wchar_t *wszPDB, size_t cchMax);
+    wchar_t *QueryPDBNameExW(wchar_t *wszPDB, size_t cchMax);
 
     BOOL OpenDBIEx(
         SZ_CONST                szTarget,
         SZ_CONST                szMode,
-        OUT DBI**               ppdbi,
+        /*OUT*/DBI**               ppdbi,
         PfnFindDebugInfoFile    pfn=0
         );
 
-    BOOL OpenSrc(OUT Src** ppsrc);
+    BOOL OpenSrc(/*OUT*/Src** ppsrc);
     void CopySrc( PDB* ppdbFrom );
 
 
@@ -337,7 +339,7 @@ private:
 
     static BOOL patchSigAndAge(const wchar_t *wszPdb, SIG newSig, const SIG70 & newSig70, AGE newAge, AGE newDbiAge, bool fStripped);
 
-    static BOOL niForNextFreeSn(void* pv, OUT NI* pni);
+    static BOOL niForNextFreeSn(void* pv, /*OUT*/NI* pni);
 
     static BOOL eraseNamedStream(const wchar_t *wszPdb, PfnPDBCopyQueryCallback pfnCallBack, void *pvContext);
 

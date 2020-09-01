@@ -1,5 +1,6 @@
 //////////////////////////////////////////////////////////////////////////////
 // Type Map implementation
+#include "missing_impl.h"
 
 #include "pdbimpl.h"
 #include "dbiimpl.h"
@@ -7,6 +8,7 @@
 
 #include <stdio.h>
 #include <malloc.h>
+void MapLeafStToSz(lfPreComp *lfp, SZ name){}
 
 #define IS_ST_LEAF(p)     (MapLeafStToSz(((lfEasy*)p)->leaf) != ((lfEasy*)p)->leaf)
 #define SZ_NAME(p, n)     (IS_ST_LEAF(p) ? szForSt((ST)p->n) : (SZ)p->n)
@@ -15,6 +17,10 @@
 #ifdef _DEBUG
 BOOL rgbEnableDiagnostic[20];
 #endif
+
+
+// TODO:
+
 
 TM::TM(PDB1* ppdb1To_, DBI1* pdbi1To_, TPI* ptpiTo_, TPI* pipiTo_)
     : ppdb1To(ppdb1To_), pdbi1To(pdbi1To_), ptpiTo(ptpiTo_), pipiTo(pipiTo_),
@@ -278,7 +284,9 @@ BOOL TMR::fInit(PB pbTypes_, CB cb, SZ szModule, ULONG sigTypes)
     assert(implies(IsTmpctOwner(), m_ptmpct != NULL));
 
     if (fPrecomp && !pdbi1To->fGetTmpct(ptypePreComp, &m_ptmpct)) {
-        SZ szErr = NEW_SZ_NAME(plfPreComp, name);
+        //@@@SZ szErr = NEW_SZ_NAME(plfPreComp, name);
+        unimplemented;
+        SZ szErr = nullptr;
         ppdb1To->setLastError(EC_PRECOMP_REQUIRED, szErr);
         freeSz(szErr);
         return FALSE;

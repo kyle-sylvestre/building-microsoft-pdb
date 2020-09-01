@@ -206,11 +206,11 @@ BOOL Array<T>::setSize(size_t itMacNew) {
     return FALSE;
 }
 
-template <class T> inline
-BOOL Array<T>::save(Buffer* pbuf) const {
-    return pbuf->Append((PB)&itMac, sizeof itMac) &&
-           (itMac == 0 || pbuf->Append((PB)rgt, itMac*sizeof(T)));
-}
+//template <class T> inline
+//BOOL Array<T>::save(Buffer* pbuf) const {
+//    return pbuf->Append((PB)&itMac, (CB)sizeof(itMac)) &&
+//           (itMac == 0 || pbuf->Append((PB)rgt, (CB)(itMac*sizeof(T)) ));
+//}
 
 #if 0
 template <class T> inline
@@ -279,7 +279,7 @@ BOOL Array<T>::findFirstEltSuchThat_Rover(BOOL (*pfn)(T*, void*), void* pArg, un
         }
     }
 
-    for (it = 0; it < *pit; ++it) {
+    for (unsigned it = 0; it < *pit; ++it) {
         if ((*pfn)(&rgt[it], pArg)) {
             *pit = it;
             return TRUE;

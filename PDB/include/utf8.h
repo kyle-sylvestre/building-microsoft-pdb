@@ -63,14 +63,24 @@ Revision History:
 extern "C" {
 #endif
 
-size_t UTF8ToUnicode(LPCSTR lpSrcStr, __out_ecount_opt(cchDest) LPWSTR lpDestStr, size_t cchDest);
-size_t UTF8ToUnicodeCch(LPCSTR lpSrcStr, size_t cchSrc, __out_ecount_opt(cchDest) LPWSTR lpDestStr, size_t cchDest);
-size_t UnicodeToUTF8(LPCWSTR lpSrcStr, __out_ecount_opt(cchDest) LPSTR lpDestStr, size_t cchDest);
-size_t UnicodeToUTF8Cch(LPCWSTR lpSrcStr, size_t cchSrc, __out_ecount_opt(cchDest) LPSTR lpDestStr, size_t cchDest);
-size_t UnicodeLengthOfUTF8 (PCSTR pUTF8);
-size_t UTF8LengthOfUnicode (PCWSTR pUni);
-size_t UnicodeLengthOfUTF8Cb (PCSTR pUTF8, size_t cbUTF);
-size_t UTF8LengthOfUnicodeCch (PCWSTR pUni, size_t cchUni);
+//size_t UTF8ToUnicode(LPCSTR lpSrcStr, __out_ecount_opt(cchDest) LPWSTR lpDestStr, size_t cchDest);
+//size_t UTF8ToUnicodeCch(LPCSTR lpSrcStr, size_t cchSrc, __out_ecount_opt(cchDest) LPWSTR lpDestStr, size_t cchDest);
+//size_t UnicodeToUTF8(LPCWSTR lpSrcStr, __out_ecount_opt(cchDest) LPSTR lpDestStr, size_t cchDest);
+//size_t UnicodeToUTF8Cch(LPCWSTR lpSrcStr, size_t cchSrc, __out_ecount_opt(cchDest) LPSTR lpDestStr, size_t cchDest);
+//size_t UnicodeLengthOfUTF8 (PCSTR pUTF8);
+//size_t UTF8LengthOfUnicode (PCWSTR pUni);
+//size_t UnicodeLengthOfUTF8Cb (PCSTR pUTF8, size_t cbUTF);
+//size_t UTF8LengthOfUnicodeCch (PCWSTR pUni, size_t cchUni);
+
+    // @@@ HACK
+    size_t UTF8ToUnicode(LPCSTR lpSrcStr, __out_ecount_opt(cchDest) LPWSTR lpDestStr, size_t cchDest);
+    size_t UTF8ToUnicodeCch(LPCSTR lpSrcStr, size_t cchSrc, __out_ecount_opt(cchDest) LPWSTR lpDestStr, size_t cchDest);
+    size_t UnicodeToUTF8(LPCWSTR lpSrcStr, __out_ecount_opt(cchDest) LPSTR lpDestStr, size_t cchDest);
+    size_t UnicodeToUTF8Cch(LPCWSTR lpSrcStr, size_t cchSrc, __out_ecount_opt(cchDest) LPSTR lpDestStr, size_t cchDest);
+    size_t UnicodeLengthOfUTF8(PCSTR pUTF8);
+    size_t UTF8LengthOfUnicode(PCWSTR pUni);
+    size_t UnicodeLengthOfUTF8Cb(PCSTR pUTF8, size_t cbUTF);
+    size_t UTF8LengthOfUnicodeCch(PCWSTR pUni, size_t cchUni);
 
 #ifdef __cplusplus
 }

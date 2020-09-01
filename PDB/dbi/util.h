@@ -1,6 +1,9 @@
 ////////////////////////////////////////////////////////////////////////////////
 // Inline utility functions.
 
+struct SYMTYPE;
+extern long cbForSym(SYMTYPE *psym);
+
 inline BOOL DBI1::packRefToGS (PSYM psym, IMOD imod, OFF off, OFF *poff)
 {
     assert(pgsiGS);

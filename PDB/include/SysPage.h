@@ -15,6 +15,7 @@ namespace pdb_internal {
             }
         };
     extern SysPage  cbSysPage;
+    //extern SysPage  cbSysPage;
     }
 
 #endif  // _SysPage_h

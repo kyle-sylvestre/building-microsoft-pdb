@@ -844,7 +844,8 @@ private:
         Map<IModSec, DWORD, hcSC> mpSecToSC;
 
         // Used by QueryAddrForSecEx() and QueryAddrForSec()
-        BOOL DBI1::fCreateSecToSCMap(Map<IModSec, DWORD, hcSC> & map, IMOD imod, bool fZeroChar);
+        BOOL fCreateSecToSCMap(Map<IModSec, DWORD, hcSC> & map, IMOD imod, bool fZeroChar);
+        //BOOL DBI1::fCreateSecToSCMap(Map<IModSec, DWORD, hcSC> & map, IMOD imod, bool fZeroChar);
 
         // if in write mode, it's always exclusive
         // if in read mode, bufSecMap doesn't change after fInit

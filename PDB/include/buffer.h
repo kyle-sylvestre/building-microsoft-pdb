@@ -8,6 +8,8 @@
 #include "crefobj.h"
 #include "ref.h"
 
+#include "custom.h"
+
 #include <stdlib.h>
 #include "SysPage.h"
 
@@ -32,12 +34,89 @@ public:
         if (pbStart)
             Free();
     }
+    BOOL Append(const PB pbIn, CB cbIn, OUT PB* ppbOut = (PB*)0)
+    {
+        if (!pbIn)
+            return FALSE;
+
+        PB pb;
+        if (!ReserveNoZeroed(cbIn, &pb))
+            return FALSE;
+
+        if (ppbOut)
+            *ppbOut = pb;
+
+        memcpy(pb, pbIn, cbIn);
+        return TRUE;
+    }
+
+    BOOL AppendFmt(SZ_CONST szFmt, ...)
+    {
+        va_list args;
+        va_start(args, szFmt);
+
+        for (;;) {
+            switch (*szFmt++) {
+            case 0:
+                va_end(args);
+                return TRUE;
+            case 'b': {
+                BYTE b = va_arg(args, BYTE);
+                if (!Append(&b, sizeof b, 0))
+                    goto fail;
+                break;
+            }
+            case 's': {
+                USHORT us = va_arg(args, USHORT);
+                if (!Append((PB)&us, sizeof us, 0))
+                    goto fail;
+                break;
+            }
+            case 'l': {
+                ULONG ul = va_arg(args, ULONG);
+                if (!Append((PB)&ul, sizeof ul, 0))
+                    goto fail;
+                break;
+            }
+            case 'f': {
+                static const BYTE zeroes[7] = { 0, 0, 0, 0, 0, 0, 0 };
+                int cb = va_arg(args, int);
+                assert(cb <= sizeof(zeroes));
+                if (cb != 0 && !Append((PB)zeroes, cb, 0))
+                    goto fail;
+                break;
+            }
+            case 'z': {
+                SZ sz = va_arg(args, SZ);
+                CB cb = CB(strlen(sz));
+                if (!Append((PB)sz, cb, 0))
+                    goto fail;
+                break;
+            }
+            case 'w': {     // Wide char string
+                wchar_t *wcs = va_arg(args, wchar_t *);
+                CB cb = CB(wcslen(wcs) + 1) * sizeof(wchar_t);
+                if (!Append((PB)wcs, cb, 0))
+                    goto fail;
+                break;
+            }
+            default:
+                assert(0);
+                break;
+            }
+        }
+
+    fail:
+        va_end(args);
+        return FALSE;
+    }
     BOOL SetInitAlloc(CB cbIn);
-    BOOL Append(const PB pbIn, CB cbIn, OUT PB* ppbOut = 0);
-    BOOL AppendFmt(SZ_CONST szFmt, ...);
+    //BOOL Append(const PB pbIn, CB cbIn, OUT PB* ppbOut = 0); 
+    //BOOL AppendFmt(SZ_CONST szFmt, ...); 
     BOOL Reserve(CB cbIn, OUT PB* ppbOut = 0);
     BOOL ReserveNoZeroed(CB cbIn, OUT PB* ppbOut = 0);
     BOOL TrimToAllocatedSize();
+
 
     BOOL SetInitAllocAndReserve(CB cbIn, OUT PB* ppbOut = 0) {
         return SetInitAlloc(cbIn) && Reserve(cbIn, ppbOut);
@@ -288,83 +367,6 @@ inline BOOL Buffer::ReserveNoZeroed(CB cbIn, OUT PB* ppbOut)
     return TRUE;
 }
 
-inline BOOL Buffer::Append(const PB pbIn, CB cbIn, OUT PB* ppbOut)
-{
-    if (!pbIn)
-        return FALSE;
-
-    PB pb;
-    if (!ReserveNoZeroed(cbIn, &pb))
-        return FALSE;
-
-    if (ppbOut)
-        *ppbOut = pb;
-
-    memcpy(pb, pbIn, cbIn);
-    return TRUE;
-}
-
-inline BOOL Buffer::AppendFmt(SZ_CONST szFmt, ...)
-{
-    va_list args;
-    va_start(args, szFmt);
-
-	for (;;) {
-		switch (*szFmt++) {
-		case 0:
-			va_end(args);
-			return TRUE;
-		case 'b': {
-			BYTE b = va_arg(args, BYTE);
-			if (!Append(&b, sizeof b, 0))
-				goto fail;
-			break;
-		}
-		case 's': {
-			USHORT us = va_arg(args, USHORT);
-			if (!Append((PB)&us, sizeof us, 0))
-				goto fail;
-			break;
-		}
-		case 'l': {
-			ULONG ul = va_arg(args, ULONG);
-			if (!Append((PB)&ul, sizeof ul, 0))
-				goto fail;
-			break;
-		}
-		case 'f': {
-			static const BYTE zeroes[7] = { 0, 0, 0, 0, 0, 0, 0 };
-			int cb = va_arg(args, int);
-			assert(cb <= sizeof(zeroes));
-			if (cb != 0 && !Append((PB)zeroes, cb, 0))
-				goto fail;
-			break;
-		}
-		case 'z': {
-			SZ sz = va_arg(args, SZ);
-			CB cb = CB(strlen(sz));
-			if (!Append((PB)sz, cb, 0))
-				goto fail;
-			break;
-		}
-		case 'w': {     // Wide char string
-			wchar_t *wcs = va_arg(args, wchar_t *);
-			CB cb = CB(wcslen(wcs) + 1) * sizeof(wchar_t);
-			if (!Append((PB)wcs, cb, 0))
-				goto fail;
-			break;
-		}
-		default:
-			assert(0);
-			break;
-		}
-	}
-
-fail:
-    va_end(args);
-    return FALSE;
-}
-
 
 // This class basically allows a Buffer object to use virtual memory
 //
@@ -530,8 +532,9 @@ inline BOOL VirtualBuffer::TrimToAllocatedSize()
     return FALSE;
 }
 
-typedef RefCount<Buffer> RefCountedBuffer;
-typedef RefPtr<RefCountedBuffer> RefBuf;
+// @@@
+//typedef RefCount<Buffer> RefCountedBuffer;
+//typedef RefPtr<RefCountedBuffer> RefBuf;
 
 template <typename TYPE, size_t cT, size_t cTMax>
 class   TBuffer {

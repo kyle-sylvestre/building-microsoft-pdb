@@ -1,5 +1,6 @@
 //////////////////////////////////////////////////////////////////////////////
 // PDB Debug Information API GSI Implementation
+#include "missing_impl.h"
 
 #include "pdbimpl.h"
 #include "dbiimpl.h"
@@ -1131,7 +1132,8 @@ BOOL GSI1::packRefSym(PSYM psym, IMOD imod, OFF off, OFF *poff)
     if (!fGetSymName(psym, reinterpret_cast<ST*>(&szName))) {
         // only S_ANNOTATION syms get through here w/o a name.
         assert(psym->rectyp == S_ANNOTATION);
-        szName = "";
+        //szName = ""; @@@
+        szName = nullptr;
     }
     
     SafeStackAllocator<1024>    allocator;

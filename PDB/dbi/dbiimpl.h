@@ -50,6 +50,20 @@ typedef USHORT CBREC;
 typedef USHORT IFILE;
 typedef long ICH;
 
+//@@@ missing_impl.cpp def
+//template<typename T>
+struct TypeTiIter
+{
+    TI x;
+    TypeTiIter(PTYPE type);
+    bool next();
+    TI &rti();
+    bool fId();
+    PB pbEndCurFieldSansPad();
+    bool nextField();
+    void *pbCurField();
+};
+
 #ifndef __MLI_INCLUDED__
 #include "mli.h"
 #endif

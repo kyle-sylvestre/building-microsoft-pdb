@@ -19,8 +19,11 @@ class CCanonFile {
     public:
 
         static wchar_t *
-        SzCanonFilename( __inout_z wchar_t *szFilename);
+            SzCanonFilename(__inout_z wchar_t *szFilename) { return nullptr; }
 
         static wchar_t * 
-        SzFullCanonFilename(__in_z const wchar_t *szFile,  __ecount(cch) wchar_t *szCanonFile, size_t cch);
+            SzFullCanonFilename(__in_z const wchar_t *szFile, __ecount(cch) wchar_t *szCanonFile, size_t cch)
+        {
+            return nullptr;
+        }
 };

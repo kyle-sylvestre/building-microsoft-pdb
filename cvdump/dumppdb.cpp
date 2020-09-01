@@ -7,13 +7,17 @@
 *
 *
 ***********************************************************************/
+#include "win32_types.h"
+#include "pdb.h"
+#include "windows.h"
+//#include "array.h" //@@@
+//#include "map.h" //@@@
+
 
 #include "cvdump.h"
 
-#define STRICT
-#define WIN32_LEAN_AND_MEAN
-#include "windows.h"
-#include "_winnt2.h"
+// @@@ #include "_winnt2.h"
+//#include <winnt.h>
 
 #ifndef IMAGE_FILE_MACHINE_POWERPCBE
 #define IMAGE_FILE_MACHINE_POWERPCBE         0x01F2  // IBM PowerPC Big-Endian
@@ -35,9 +39,9 @@ bool fUtf8Symbols;
 
 // LANGAPI shared files
 
-#define dassert assert
-#define precondition    dassert
-#define postcondition   dassert
+//#define dassert assert
+//#define precondition    dassert
+//#define postcondition   dassert
 
 #include "map_t.h"
 
@@ -55,7 +59,6 @@ enum DbgInfoKind {
 void (*pfn)(size_t, PB);
 
 // map support for src file names
-
 class CWsz {
     wchar_t *m_wsz;
 
@@ -99,7 +102,7 @@ public:
         return m_wsz;
     }
 
-    operator LHASH() const {
+    LHASH operator()() { 
         if (m_wsz) {
             wchar_t *wszUpper = _wcsdup(m_wsz);
             _wcsupr_s(wszUpper, wcslen(wszUpper));
@@ -122,10 +125,11 @@ public:
     }
 };
 
-typedef HashClass<CWsz,hcCast>      HcWsz;
-typedef Map<CWsz, BYTE, HcWsz>      FileMap;
-typedef EnumMap<CWsz, BYTE, HcWsz>  EnumFileMap;
-typedef Array<CWsz>                 RgCWsz;
+//@@@
+//typedef HashClass<CWsz,hcCast>      HcWsz;
+//typedef Map<CWsz, BYTE, HcWsz>      FileMap;
+//typedef EnumMap<CWsz, BYTE, HcWsz>  EnumFileMap;
+//typedef Array<CWsz>                 RgCWsz;
 
 void DumpGSI(GSI *pgsi)
 {

@@ -1,16 +1,15 @@
 #pragma once
 //standard typedefs used by pdb and its associated components
+#include "missing_impl.h"
 
-typedef unsigned short  ushort;
-typedef unsigned long   ulong;
 typedef char*	        ST;			// length prefixed string
 typedef const char*	ST_CONST;		// const length prefixed string
 typedef char*	        SZ;			// zero terminated string
 typedef const char*     SZ_CONST;               // const string
 typedef wchar_t*	USZ;			// zero terminated string
 typedef const wchar_t* USZ_CONST;               // const string
-typedef BYTE*	        PB;			// pointer to some bytes
-typedef long	        CB;			// count of bytes
+//typedef BYTE*	        PB;			// pointer to some bytes @@@
+//typedef long	        CB;			// count of bytes
 typedef long	        OFF;		        // offset
 typedef OFF*            POFF;                   // pointer to offset
 typedef wchar_t *       WSZ;                    // Wide string
@@ -37,13 +36,13 @@ typedef int_ptr_t *         pint_ptr_t;
 typedef ulong_ptr_t *       pulong_ptr_t;
 typedef long_ptr_t *        plong_ptr_t;
 
-typedef USHORT	IFILE;		// file index
-typedef USHORT	IMOD;		// module index
-typedef USHORT	ISECT;		// section index
-typedef USHORT	LINE;		// line number
-typedef ULONG   LINE32;         // long line number
-typedef USHORT	HASH;		// short hash
-typedef ULONG	LHASH;		// long hash
+typedef unsigned short	IFILE;		// file index
+typedef unsigned short	IMOD;		// module index
+typedef unsigned short	ISECT;		// section index
+typedef unsigned short	LINE;		// line number
+typedef unsigned long   LINE32;         // long line number
+typedef unsigned short	HASH;		// short hash
+typedef unsigned long	LHASH;		// long hash
 
 // TFS #498256 -- We used to define a local buffer with length _MAX_PATH
 // and use it as dest buffer to call _wmakepath().  When the combined length

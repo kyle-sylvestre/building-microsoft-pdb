@@ -60,6 +60,8 @@
 // write to hdr swaps the roles of the two FPM sets and atomically
 // updates the MSF to reflect the new location of the StrmTbl stream.
 
+#include "custom.h" // @@@
+
 #include "prefast.h"
 
 #define UNICODE
@@ -79,12 +81,11 @@
 #include <limits.h>
 #include <errno.h>
 
-
-#define STRICT
+//#define STRICT
 //#define WIN32_LEAN_AND_MEAN
-#include "windows.h"
+#include <windows.h>
 
-#include <objidl.h>
+//#include <ObjIdl.h>
 
 #include "ref.h"                // for COMRefPtr
 
@@ -92,8 +93,7 @@
 #include "mapfile.h"
 #include "istream.h"
 
-#include "pdbtypdefs.h"
-
+//#include "pdbtypdefs.h"
 
 #define precondition(x) assert(x)
 #define postcondition(x) assert(x)
@@ -131,7 +131,6 @@ using namespace pdb_internal;
 #define FALSE   0
 #endif
 
-typedef unsigned short      ushort;
 typedef unsigned __int16    PN16;       // page number
 typedef unsigned __int16    SPN16;      // stream page number
 typedef unsigned __int32    PN32;
@@ -144,7 +143,6 @@ typedef PN32    UPN;    // universal page no.
 typedef SPN32   USPN;   // universal stream page no.
 
 typedef unsigned char BYTE;
-typedef BYTE* PB;
 typedef void* PV;
 
 const CB    cbPgMax     = 0x1000;
@@ -231,7 +229,7 @@ inline unsigned cpnForCbCbPg(unsigned cb, unsigned cbpg) {
 #endif
     return (cb + cbpg - 1) / cbpg;
 }
-inline unsigned cpnForCbLgCbPg(unsigned cb, unsigned lgcbpg) {
+inline unsigned cpnForCbLgCbPg(unsigned cb, unsigned lgcbpg) { //@@@ Tard Names
 #ifdef SMALLPAGES
     // valid pages sizes are only 512, 1k, 2k, 4k.
     assert(lgcbpg >= 9 && lgcbpg <= 12);
@@ -246,7 +244,7 @@ inline unsigned cpnForCbLgCbPg(unsigned cb, unsigned lgcbpg) {
 
 struct SI { // stream info
     CB  cb; // length of stream, cbNil if stream does not exist
-    UPN*    mpspnpn;
+    UPN*    mpspnpn; // @@@ goddamn these names are horrible
 
     SI() : cb(cbNil), mpspnpn(0) { }
     BOOL isValid() const {
@@ -1439,7 +1437,7 @@ static BOOL OsAwareDeleteFile( const wchar_t *wszFilename )
 
 BOOL MSF_HB::internalStreamOpen(IStream* pIStream_, BOOL fWrite, MSF_EC* pec, CB cbPage_) {
     assert( pIStream == NULL );
-    if ((pIStream = IStreamReal::Create(pIStream_)) == NULL ) {
+    if ((pIStream.intr = IStreamReal::Create(pIStream_)) == nullptr ) {
         if ( pec ) {
             *pec = MSF_EC_OUT_OF_MEMORY;
         }
@@ -1699,7 +1697,7 @@ BOOL MSF_HB::switchToCRTStream() {
     if ( pIStream->GetType() == IStreamInternal::StreamTypeMemMappedFile ) {
         // We can downgrade from mem mapped I/O to CRT I/O
         // and save some, now precious, address space ...
-        IStreamMemMappedFile *pMemMappedFile = (IStreamMemMappedFile *)(IStreamInternal *)pIStream;
+        IStreamMemMappedFile *pMemMappedFile = (IStreamMemMappedFile *)(IStreamInternal *)pIStream.intr;
         HANDLE hFile;
         if (pMemMappedFile->Detach(&hFile)) {
             if (hFile != INVALID_HANDLE_VALUE) {
@@ -2598,7 +2596,7 @@ bool MSF_HB::FSetCompression(CompressionType ct, bool fCompress) const {
 
     if (ct == ctFileSystem) {
 
-        HANDLE hFile = pIStream->GetFileHandle();
+        HANDLE hFile = pIStream.intr->GetFileHandle();
 
         if (hFile == INVALID_HANDLE_VALUE) {
             // If we don't have a file handle, we cannot handle file system
@@ -2636,10 +2634,10 @@ bool MSF_HB::FSetCompression(CompressionType ct, bool fCompress) const {
 bool MSF_HB::FGetCompression(MSF::CompressionType ct, bool & fPrevCompress) const {
 
     MTS_PROTECT(m_cs);
-
+    
     if (ct == ctFileSystem) {
-
-        HANDLE hFile = pIStream->GetFileHandle();
+        
+        HANDLE hFile = pIStream.intr->GetFileHandle();
 
         if (hFile == INVALID_HANDLE_VALUE) {
             // If we don't have a file handle, we cannot handle file system
@@ -2678,6 +2676,11 @@ bool StrmTbl::internalSerializeBigMsf2(serOp op, PB pb, CB* pcb, MSF_HB *pmsf, M
     return pmsf->FSerializeMsf(pb, pcb, this, pec);
 }
 
+//int main(int argc, char *argv[])
+//{
+//    
+//}
+
 
 extern "C" {
 
@@ -2690,5 +2693,7 @@ MSF* __cdecl MSFOpenW(const wchar_t *wszFilename, BOOL fWrite, MSF_EC *pec) {
 MSF* __cdecl MSFOpenExW(const wchar_t *wszFilename, BOOL fWrite, MSF_EC *pec, CB cbPage) {
     return MSF::Open(wszFilename, fWrite, pec, cbPage);
 }
+
+
 
 } // extern "C"

@@ -27,13 +27,16 @@
 #include <sys\types.h>
 #include <time.h>
 
+#pragma pack(push, 1)
 #include "cvexefmt.h"
+#pragma pop
 #include "cvinfo.h"
 #include "output.h"
 
 #include "pdb.h"
 
 #include "cvtdef.h"
+#include "missing_impl.h"
 
 // typedef unsigned char   BYTE;
 // typedef int             BOOL;
@@ -46,8 +49,6 @@ typedef char *          SZ;
 typedef const char *    SZ_CONST;
 typedef char *          ST;
 typedef const char *    ST_CONST;
-typedef unsigned char * PB;
-typedef long            CB;
 
 #define LNGTHSZ 2       // The size of the length field
 #define MAXTYPE  0xffff
@@ -113,8 +114,9 @@ extern  OMFDirEntry Libraries;         // sstLibraries directory entry
 extern  OMFDirEntry GlobalPub;
 extern  OMFDirEntry GlobalSym;
 extern  OMFDirEntry GlobalTypes;
-BYTE   RecBuf[];
-extern  WORD      Sig;               // file signature
+//BYTE   RecBuf[]; @@@
+extern  BYTE        RecBuf[];
+extern  WORD        Sig;               // file signature
 
 
 void Fatal(const wchar_t *);

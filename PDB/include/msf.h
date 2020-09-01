@@ -3,6 +3,8 @@
 #ifndef __MSF_INCLUDED__
 #define __MSF_INCLUDED__
 
+#include "missing_impl.h"
+
 #ifndef TRUE
 
 #define TRUE    1
@@ -21,7 +23,8 @@ typedef int BOOL;
 
 // compile time assert
 #if !defined(cassert)
-#define cassert(x) extern char dummyAssert[ (x) ]
+//#define cassert(x) extern char dummyAssert[ (x) ]
+#define cassert(x) static_assert(x, #x)
 #endif
 
 #if !defined(pure)
@@ -38,7 +41,7 @@ typedef BOOL (__cdecl *PFNfReadMSFRawBytes)(const void *, long);
 typedef void *          PV;
 typedef unsigned short  SN;     // stream number
 typedef unsigned long   UNSN;   // unified stream number
-typedef long            CB;     // size (count of bytes)
+//typedef long            CB;     // size (count of bytes) @@@
 typedef long            OFF;    // offset
 
 #define cbNil   ((long)-1)

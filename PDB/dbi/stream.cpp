@@ -54,7 +54,7 @@ BOOL PDB1::OpenStreamEx(SZ_CONST sz, SZ_CONST szMode, OUT Stream** ppstream) {
 }
 #endif
 
-BOOL PDB1::GetEnumStreamNameMap(OUT Enum** ppenum) {
+BOOL PDB1::GetEnumStreamNameMap(Enum** ppenum) {
     // MTS NOTE: NMTNI is MTS, no need to protect
     // MTS NOTE: EnumNMTNI can't be share with multiple thread!
 	return !!(*ppenum = (Enum *)new EnumNMTNI(nmt));

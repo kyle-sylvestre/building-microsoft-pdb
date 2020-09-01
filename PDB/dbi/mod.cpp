@@ -7,9 +7,14 @@
 #include "comenvi.h"
 #include "cvhelper.h"
 #include "utf8.h"
-#include "debug_s.h"
+// #include "debug_s.h" @@@
 #include "cvlines.h"
 #include "set.h"
+
+#include "missing_impl.h"
+
+typedef int DSR_EC; //@@@
+BOOL IS_SZ_FORMAT_PDB(PDB1 *pdb) { unimplemented; return false; }
 
 static void setDSRError(PDB1 * ppdb1, DSR_EC ec) {
     static EC xlateDsrEcToPdbEc[] = {
@@ -19,15 +24,17 @@ static void setDSRError(PDB1 * ppdb1, DSR_EC ec) {
         EC_CORRUPT,
         EC_CORRUPT,
     };
+    const int DSR_EC_MAX = _countof(xlateDsrEcToPdbEc); //@@@
     cassert(_countof(xlateDsrEcToPdbEc) == DSR_EC_MAX);
     assert(ec < DSR_EC_MAX);
     ppdb1->setLastError(xlateDsrEcToPdbEc[ec]);
 };
 
-// Declarations of some functions defined in sttosz.cpp
-CB ConvertSymRecFmMBCSToUTF8(PSYM psymSrc, PSYM psymDest, CB cbDest);
-BOOL fConvertSymRecStToSz(PB pbSrc, CB cbSrc, PB pbDest, CB *pcbDest, Array<OffMap>& rgOffMap);
-BOOL fConvertSymRecStToSzWithSig(PB pbSrc, CB cbSrc, CvtSyms& cvtsyms);
+// Declarations of some functions defined in sttosz.cpp, 
+// @@@
+CB ConvertSymRecFmMBCSToUTF8(PSYM psymSrc, PSYM psymDest, CB cbDest) { unimplemented; return {}; }
+BOOL fConvertSymRecStToSz(PB pbSrc, CB cbSrc, PB pbDest, CB *pcbDest, Array<OffMap>& rgOffMap) { unimplemented; return {}; }
+BOOL fConvertSymRecStToSzWithSig(PB pbSrc, CB cbSrc, CvtSyms& cvtsyms) { unimplemented; return {}; }
 
 Mod1::Mod1(PDB1* ppdb1_, DBI1* pdbi1_, IMOD imod_)
     : ppdb1(ppdb1_), pdbi1(pdbi1_), ptm(0), imod(imod_), fSymsAdded_S(FALSE),
@@ -3449,7 +3456,7 @@ bool Mod1::processC13(bool fWrite)
             }
         }
     }
-
+    
     if (rbufC13Lines != NULL && rbufC13Lines->Size()) {
         // Now process the new C13 linenumber stuff
 

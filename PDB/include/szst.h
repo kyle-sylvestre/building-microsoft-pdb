@@ -6,6 +6,8 @@
 
 #include <malloc.h>
 #include "utf8.h"
+#include "custom.h" // @@@
+#include <sal.h>
 
 inline SZ szCopySt(ST_CONST stFrom)
 {
@@ -108,8 +110,6 @@ inline void freeWsz(const wchar_t *wsz)
 ///////////////////////////////////////////////////////////////////
 // UTF functions
 
-typedef char *UTFSZ;
-typedef const char *UTFSZ_CONST;
 
 #define utflen(s)          UnicodeLengthOfUTF8(s)
 
@@ -241,6 +241,7 @@ inline wchar_t *_GetSZUnicodeFromSZMBCS(SZ_CONST szMBCS, __out_ecount(cchUnicode
     return pwcs;
 }
 
+// @@@
 inline UTFSZ _GetSZUTF8FromSZUnicode(const wchar_t *szUnicode, _Inout_opt_cap_(cbUTF8) UTFSZ szUtf8, size_t cbUTF8)
 {
     if (szUtf8 == NULL)
@@ -292,7 +293,7 @@ inline SZ _GetSZMBCSFromSZUTF8(SZ_CONST szUTF8, _Inout_opt_cap_(cbMBCS) SZ szMBC
     if (szUnicode == NULL)
         return NULL;
 
-    return _GetSZMBCSFromSZUnicode(szUnicode, szMBCS, cbMBCS);
+    return (SZ)_GetSZMBCSFromSZUnicode(szUnicode, szMBCS, cbMBCS);
 }
 
 inline int SZMBCSToSZUTF8(SZ_CONST szMBCS, _Inout_opt_cap_(cbMax) SZ szUTF8, CB cbMax)
@@ -358,7 +359,7 @@ inline wchar_t *_GetSZUnicodeFromSZMBCS(SZ_CONST sz, Allocator& ___allocator)
 inline UTFSZ _GetSZUTF8FromSZUnicode(const wchar_t *wsz, Allocator& ___allocator)
 {
     size_t cbAlloc = UTF8LengthOfUnicode(wsz);
-    return _GetSZUTF8FromSZUnicode(wsz, (UTFSZ)___allocator.AllocBytes(cbAlloc), cbAlloc);
+    return _GetSZUTF8FromSZUnicode(wsz, (UTFSZ)___allocator.fAllocBytes(cbAlloc), cbAlloc);
 }
 
 inline wchar_t *_GetSZUnicodeFromSZUTF8(UTFSZ_CONST utfsz, Allocator& ___allocator)

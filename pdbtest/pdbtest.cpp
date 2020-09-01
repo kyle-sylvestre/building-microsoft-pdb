@@ -2,10 +2,13 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include <vcbudefs.h> // From \langapi\include
-#include <pdb.h>
-#include <cvinfo.h>
-#include <cvr.h>
+//#include <vcbudefs.h> // From \langapi\include
+#include "missing_impl.h"
+#include "custom.h"
+#include "pdb.h"
+#include "cvinfo.h"
+#include "cvr.h"
+
 
 #define FALSE 0
 #define TRUE  1
@@ -32,10 +35,11 @@ void main(int argc, char **argv)
 
 	PDB *pdb;
 	EC ec;
-	char szError[cbErrMax];
+	wchar_t szError[cbErrMax];
 
-	if (!PDB::Open(argv[1], "r", (SIG)0, &ec, szError, &pdb)) {
-		printf("Couldn't open %s :E%d %s", argv[1], ec, szError);
+	//if (!PDB::Open(argv[1], "r", (SIG)0, &ec, szError, &pdb)) {
+    if (!PDB::Open2W(L"gorgon.pdb", pdbRead, &ec, szError, cbErrMax, &pdb)) {
+		printf("Couldn't open %s :E%d %ws", argv[1], ec, szError);
 		exit(1);
 	}
 
@@ -74,7 +78,7 @@ void main(int argc, char **argv)
 		lfUnion *plfUnion = (lfUnion*)(pb+2);
 
 		unsigned char *pdata = NULL;
-		char *szType;
+		const char *szType = nullptr;
 
 		switch (plfClass->leaf)
 		{
@@ -265,6 +269,7 @@ BOOL verifySymbols(Mod* pmod) {
 
 void verifySymbol(PSYM psym)
 {
+#if 0
 	SymTiIter tii(psym);
 	if (tii.next())
 	{
@@ -283,5 +288,6 @@ void verifySymbol(PSYM psym)
 			return;
 		}
 	}
+#endif
 }
 

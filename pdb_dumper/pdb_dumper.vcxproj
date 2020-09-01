@@ -1,0 +1,257 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>15.0</VCProjectVersion>
+    <ProjectGuid>{9C92C05C-0412-46A4-A7B3-6B1B9800B55F}</ProjectGuid>
+    <RootNamespace>pdbdumper</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
+    <ProjectName>cv_pdb_dumper</ProjectName>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <OutDir>$(ProjectDir)Output\$(Configuration) $(Platform)\</OutDir>
+    <IntDir>$(ProjectDir)Intermediate\$(Configuration) $(Platform)\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <OutDir>$(ProjectDir)Output\$(Configuration) $(Platform)\</OutDir>
+    <IntDir>$(ProjectDir)Intermediate\$(Configuration) $(Platform)\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <OutDir>$(ProjectDir)Output\$(Configuration) $(Platform)\</OutDir>
+    <IntDir>$(ProjectDir)Intermediate\$(Configuration) $(Platform)\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <OutDir>$(ProjectDir)Output\$(Configuration) $(Platform)\</OutDir>
+    <IntDir>$(ProjectDir)Intermediate\$(Configuration) $(Platform)\</IntDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>TurnOffAllWarnings</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>true</SDLCheck>
+      <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>$(SolutionDir)cvdump;$(SolutionDir)include;$(SolutionDir)langapi\include;$(SolutionDir)langapi\shared;$(SolutionDir)PDB\dbi;$(SolutionDir)PDB\include;$(SolutionDir)PDB\msf;$(SolutionDir)missing</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>PDB_LIBRARY;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>true</SDLCheck>
+      <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>$(SolutionDir)cvdump;$(SolutionDir)include;$(SolutionDir)langapi\include;$(SolutionDir)langapi\shared;$(SolutionDir)PDB\dbi;$(SolutionDir)PDB\include;$(SolutionDir)PDB\msf;$(SolutionDir)missing</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>PDB_LIBRARY;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>$(SolutionDir)cvdump;$(SolutionDir)include;$(SolutionDir)langapi\include;$(SolutionDir)langapi\shared;$(SolutionDir)PDB\dbi;$(SolutionDir)PDB\include;$(SolutionDir)PDB\msf;$(SolutionDir)missing</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>PDB_LIBRARY;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>$(SolutionDir)cvdump;$(SolutionDir)include;$(SolutionDir)langapi\include;$(SolutionDir)langapi\shared;$(SolutionDir)PDB\dbi;$(SolutionDir)PDB\include;$(SolutionDir)PDB\msf;$(SolutionDir)missing</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>PDB_LIBRARY;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="..\missing\missing_impl.cpp" />
+    <ClCompile Include="..\missing\sha256.cpp" />
+    <ClCompile Include="..\pdbtest\pdbtest.cpp" />
+    <ClCompile Include="..\PDB\dbi\cbind.cpp" />
+    <ClCompile Include="..\PDB\dbi\dbi.cpp" />
+    <ClCompile Include="..\PDB\dbi\dbicommon.cpp" />
+    <ClCompile Include="..\PDB\dbi\dbipch.cpp" />
+    <ClCompile Include="..\PDB\dbi\gsi.cpp" />
+    <ClCompile Include="..\PDB\dbi\heap.cpp" />
+    <ClCompile Include="..\PDB\dbi\locator.cpp" />
+    <ClCompile Include="..\PDB\dbi\mli.cpp" />
+    <ClCompile Include="..\PDB\dbi\mod.cpp" />
+    <ClCompile Include="..\PDB\dbi\pdb.cpp" />
+    <ClCompile Include="..\PDB\dbi\pdbcommon.cpp" />
+    <ClCompile Include="..\PDB\dbi\pdbmain.cpp" />
+    <ClCompile Include="..\PDB\dbi\src.cpp" />
+    <ClCompile Include="..\PDB\dbi\stream.cpp" />
+    <ClCompile Include="..\PDB\dbi\tm.cpp" />
+    <ClCompile Include="..\PDB\dbi\tpi.cpp" />
+    <ClCompile Include="..\PDB\dbi\udtrefs.cpp" />
+    <ClCompile Include="..\PDB\msf\mapfile.cpp" />
+    <ClCompile Include="..\PDB\msf\msf.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\cvdump\src\crc32.h" />
+    <ClInclude Include="..\cvdump\src\cvconst.h" />
+    <ClInclude Include="..\cvdump\src\cvdump.h" />
+    <ClInclude Include="..\cvdump\src\cvexefmt.h" />
+    <ClInclude Include="..\cvdump\src\cvinfo.h" />
+    <ClInclude Include="..\cvdump\src\cvtdef.h" />
+    <ClInclude Include="..\cvdump\src\debsym.h" />
+    <ClInclude Include="..\cvdump\src\output.h" />
+    <ClInclude Include="..\cvdump\src\pdb.h" />
+    <ClInclude Include="..\cvdump\src\symrec.h" />
+    <ClInclude Include="..\cvdump\src\typeinfo.h" />
+    <ClInclude Include="..\missing\armregs.h" />
+    <ClInclude Include="..\missing\arm64regs.h" />
+    <ClInclude Include="..\missing\crefobj.h" />
+    <ClInclude Include="..\missing\custom.h" />
+    <ClInclude Include="..\missing\cvr.h" />
+    <ClInclude Include="..\missing\map_t.h" />
+    <ClInclude Include="..\missing\mod_custom.h" />
+    <ClInclude Include="..\missing\prefast.h" />
+    <ClInclude Include="..\missing\ref.h" />
+    <ClInclude Include="..\missing\safestk.h" />
+    <ClInclude Include="..\missing\util_misc.h" />
+    <ClInclude Include="..\missing\verstamp.h" />
+    <ClInclude Include="..\missing\missing_impl.h" />
+    <ClInclude Include="..\PDB\dbi\dbi.h" />
+    <ClInclude Include="..\PDB\dbi\dbiimpl.h" />
+    <ClInclude Include="..\PDB\dbi\gsi.h" />
+    <ClInclude Include="..\PDB\dbi\locator.h" />
+    <ClInclude Include="..\PDB\dbi\mli.h" />
+    <ClInclude Include="..\PDB\dbi\pdb1.h" />
+    <ClInclude Include="..\PDB\dbi\stream.h" />
+    <ClInclude Include="..\PDB\dbi\tm.h" />
+    <ClInclude Include="..\PDB\dbi\tpi.h" />
+    <ClInclude Include="..\PDB\dbi\udtrefs.h" />
+    <ClInclude Include="..\PDB\dbi\util.h" />
+    <ClInclude Include="..\PDB\include\array.h" />
+    <ClInclude Include="..\PDB\include\assert_.h" />
+    <ClInclude Include="..\PDB\include\buffer.h" />
+    <ClInclude Include="..\PDB\include\cbitvect.h" />
+    <ClInclude Include="..\PDB\include\critsec.h" />
+    <ClInclude Include="..\PDB\include\crtfubar.h" />
+    <ClInclude Include="..\PDB\include\crtwrap.h" />
+    <ClInclude Include="..\PDB\include\cvhelper.h" />
+    <ClInclude Include="..\PDB\include\cvlines.h" />
+    <ClInclude Include="..\PDB\include\dbicommon.h" />
+    <ClInclude Include="..\PDB\include\enum.h" />
+    <ClInclude Include="..\PDB\include\gsicommon.h" />
+    <ClInclude Include="..\PDB\include\indbuf.h" />
+    <ClInclude Include="..\PDB\include\iset.h" />
+    <ClInclude Include="..\PDB\include\map.h" />
+    <ClInclude Include="..\PDB\include\mapfile.h" />
+    <ClInclude Include="..\PDB\include\mdalign.h" />
+    <ClInclude Include="..\PDB\include\misc.h" />
+    <ClInclude Include="..\PDB\include\modcommon.h" />
+    <ClInclude Include="..\PDB\include\mrcommon.h" />
+    <ClInclude Include="..\PDB\include\msf.h" />
+    <ClInclude Include="..\PDB\include\mts.h" />
+    <ClInclude Include="..\PDB\include\nmt.h" />
+    <ClInclude Include="..\PDB\include\nmtni.h" />
+    <ClInclude Include="..\PDB\include\objfile.h" />
+    <ClInclude Include="..\PDB\include\output.h" />
+    <ClInclude Include="..\PDB\include\pdbcommon.h" />
+    <ClInclude Include="..\PDB\include\pdbguid.h" />
+    <ClInclude Include="..\PDB\include\pdbheap.h" />
+    <ClInclude Include="..\PDB\include\pdbimpl.h" />
+    <ClInclude Include="..\PDB\include\pdblog.h" />
+    <ClInclude Include="..\PDB\include\pdbtypdefs.h" />
+    <ClInclude Include="..\PDB\include\pdbver.h" />
+    <ClInclude Include="..\PDB\include\pool.h" />
+    <ClInclude Include="..\PDB\include\poolcpy.h" />
+    <ClInclude Include="..\PDB\include\ptr.h" />
+    <ClInclude Include="..\PDB\include\set.h" />
+    <ClInclude Include="..\PDB\include\srccommon.h" />
+    <ClInclude Include="..\PDB\include\srcimpl.h" />
+    <ClInclude Include="..\PDB\include\StrConvBuf.h" />
+    <ClInclude Include="..\PDB\include\syncro.h" />
+    <ClInclude Include="..\PDB\include\SysPage.h" />
+    <ClInclude Include="..\PDB\include\szcanon.h" />
+    <ClInclude Include="..\PDB\include\szst.h" />
+    <ClInclude Include="..\PDB\include\trace.h" />
+    <ClInclude Include="..\PDB\include\two.h" />
+    <ClInclude Include="..\PDB\include\utf8.h" />
+    <ClInclude Include="..\PDB\include\xheap.h" />
+    <ClInclude Include="..\PDB\msf\istream.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\PDB\dbi\def.dat" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

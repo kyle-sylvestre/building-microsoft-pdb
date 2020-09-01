@@ -3,6 +3,7 @@
 #ifndef __MDALIGN_INLCUDED__
 #define __MDALIGN_INCLUDED__
 
+
 typedef unsigned __int32    _file_align_t;
 
 #if defined(_M_IA64) || defined(_M_ALPHA64) || defined(_M_AMD64) || defined(_M_ARM64)

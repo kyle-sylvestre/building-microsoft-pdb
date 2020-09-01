@@ -1,6 +1,8 @@
-//////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////
 // PDB Debug Information API Implementation
 
+#include "custom.h"
+#include "missing_impl.h"
 
 #include "pdbimpl.h"
 #include "dbiimpl.h"
@@ -29,7 +31,16 @@ extern "C" _ACRTIMP time_t time( time_t *timer );
 #include "szcanon.h"
 #include "pdbver.h"
 
+
 #include "sha256.cpp"
+
+long cbForSym(SYMTYPE *psym)
+{
+    return 1;
+}
+
+#define VER_PRODUCTVERSION_STR "" // @@@
+const ushort VER_PRODUCTVERSION = 1; // @@@
 
 extern
 const
@@ -220,8 +231,8 @@ IMPV PDB1::QueryPdbImplementationVersion()
 // Program Database API Implementation
 
 
-BOOL PDB::Open2W(const wchar_t *wszPDB, const char *szMode, OUT EC *pec,
-       __out_ecount_opt(cchErrMax) wchar_t *wszError, size_t cchErrMax, OUT PDB **pppdb)
+BOOL PDB::Open2W(const wchar_t *wszPDB, const char *szMode, /*OUT*/EC *pec,
+       __out_ecount_opt(cchErrMax) wchar_t *wszError, size_t cchErrMax, /*OUT*/PDB **pppdb)
 {
     PDBLOG_FUNC();
     dassert(wszPDB);
@@ -233,7 +244,7 @@ BOOL PDB::Open2W(const wchar_t *wszPDB, const char *szMode, OUT EC *pec,
 
 
 BOOL PDB::OpenEx2W(const wchar_t *wszPDB, const char *szMode, long cbPage,
-       OUT EC *pec,  __out_ecount_opt(cchErrMax) wchar_t *wszError, size_t cchErrMax, OUT PDB **pppdb)
+       /*OUT*/EC *pec,  __out_ecount_opt(cchErrMax) wchar_t *wszError, size_t cchErrMax, /*OUT*/PDB **pppdb)
 {
     PDBLOG_FUNC();
     dassert(wszPDB);
@@ -245,8 +256,8 @@ BOOL PDB::OpenEx2W(const wchar_t *wszPDB, const char *szMode, long cbPage,
 }
 
 BOOL PDB::OpenValidate4(const wchar_t *wszPDB, const char *szMode,
-       PCSIG70 pcsig70, SIG sig, AGE age, OUT EC *pec,
-        __out_ecount_opt(cchErrMax) wchar_t *wszError, size_t cchErrMax, OUT PDB **pppdb)
+       PCSIG70 pcsig70, SIG sig, AGE age, /*OUT*/EC *pec,
+        __out_ecount_opt(cchErrMax) wchar_t *wszError, size_t cchErrMax, /*OUT*/PDB **pppdb)
 {
     PDBLOG_FUNC();
     dassert(wszPDB);
@@ -257,7 +268,7 @@ BOOL PDB::OpenValidate4(const wchar_t *wszPDB, const char *szMode,
 }
 
 BOOL PDB::OpenNgenPdb(const wchar_t *wszNgenImage, const wchar_t *wszPdbPath,
-        OUT EC *pec, __out_ecount_opt(cchErrMax) wchar_t *wszError, size_t cchErrMax, OUT PDB **pppdb)
+        /*OUT*/EC *pec, __out_ecount_opt(cchErrMax) wchar_t *wszError, size_t cchErrMax, /*OUT*/PDB **pppdb)
 {
     PDBLOG_FUNC();
     dassert(wszNgenImage);
@@ -269,8 +280,8 @@ BOOL PDB::OpenNgenPdb(const wchar_t *wszNgenImage, const wchar_t *wszPdbPath,
 
 BOOL PDB::OpenValidate5(const wchar_t *wszExecutable,
        const wchar_t *wszSearchPath, void *pvClient,
-       PfnPDBQueryCallback pfnQueryCallback, OUT EC *pec,
-        __out_ecount_opt(cchErrMax) wchar_t *wszError, size_t cchErrMax, OUT PDB **pppdb)
+       PfnPDBQueryCallback pfnQueryCallback, /*OUT*/EC *pec,
+        __out_ecount_opt(cchErrMax) wchar_t *wszError, size_t cchErrMax, /*OUT*/PDB **pppdb)
 {
     PDBLOG_FUNC();
     dassert(wszExecutable);
@@ -281,8 +292,8 @@ BOOL PDB::OpenValidate5(const wchar_t *wszExecutable,
 }
 
 
-BOOL PDB::OpenInStream(IStream *pIStream, const char *szMode, OUT EC *pec,
-        __out_ecount_opt(cchErrMax) wchar_t *wszError, size_t cchErrMax, OUT PDB **pppdb)
+BOOL PDB::OpenInStream(IStream *pIStream, const char *szMode, /*OUT*/EC *pec,
+        __out_ecount_opt(cchErrMax) wchar_t *wszError, size_t cchErrMax, /*OUT*/PDB **pppdb)
 {
     PDBLOG_FUNC();
     dassert(pIStream);
@@ -385,8 +396,8 @@ BOOL PDB::SetErrorHandlerAPI( PfnPDBErrorCreate pfn )
 
 
 BOOL PDB1::OpenEx2W(const wchar_t *wszPDB, const char *szMode, SIG sigInitial,
-       long cbPage, OUT EC *pec,  __out_ecount_opt(cchErrMax) wchar_t *wszError, size_t cchErrMax,
-       OUT PDB **pppdb)
+       long cbPage, /*OUT*/EC *pec,  __out_ecount_opt(cchErrMax) wchar_t *wszError, size_t cchErrMax,
+       /*OUT*/PDB **pppdb)
 {
     
     // a compile-time check to make sure we have the table filled out completely
@@ -674,7 +685,7 @@ HandleError:
 }
 
 BOOL PDB1::OpenInStream(IStream* pIStream, const char *szMode, CB cbPage,
-       OUT EC *pec, __out_ecount_opt(cchErrMax) wchar_t *wszError, size_t cchErrMax, OUT PDB **pppdb)
+       /*OUT*/EC *pec, wchar_t *wszError, size_t cchErrMax, /*OUT*/PDB **pppdb)
 {
     PDBLOG_FUNC();
 
@@ -806,8 +817,8 @@ BOOL PDB1::OpenInStream(IStream* pIStream, const char *szMode, CB cbPage,
 }
 
 BOOL PDB1::OpenValidate4(const wchar_t *wszPDB, const char *szMode,
-       PCSIG70 pcsig70, SIG sig, AGE age, OUT EC *pec,
-        __out_ecount_opt(cchErrMax) wchar_t *wszError, size_t cchErrMax, OUT PDB **pppdb)
+       PCSIG70 pcsig70, SIG sig, AGE age, /*OUT*/EC *pec,
+       wchar_t *wszError, size_t cchErrMax, /*OUT*/PDB **pppdb)
 {
     PDBLOG_FUNC();
     dassert(wszPDB);
@@ -889,7 +900,7 @@ BOOL PDB1::OpenValidate4(const wchar_t *wszPDB, const char *szMode,
 }
 
 BOOL PDB1::OpenNgenPdb(const wchar_t *wszNgenImage, const wchar_t *wszPdbPath,
-       OUT EC *pec, __out_ecount_opt(cchErrMax) wchar_t *wszError, size_t cchErrMax, OUT PDB **pppdb)
+       /*OUT*/EC *pec, wchar_t *wszError, size_t cchErrMax, /*OUT*/PDB **pppdb)
 {
     PDBLOG_FUNC();
     dassert(wszNgenImage);
@@ -956,7 +967,7 @@ BOOL PDB1::OpenNgenPdb(const wchar_t *wszNgenImage, const wchar_t *wszPdbPath,
 }
 
 BOOL PDB1::OpenTSPdb(const wchar_t *szPDB, const wchar_t *szPath, const char *szMode,
-       const SIG70& sig70, AGE age, OUT EC *pec,  __out_ecount_opt(cchErrMax) wchar_t *szError, size_t cchErrMax, OUT PDB **pppdb)
+       const SIG70& sig70, AGE age, /*OUT*/EC *pec, wchar_t *szError, size_t cchErrMax, /*OUT*/PDB **pppdb)
 {
     PDBLOG_FUNC();
     wchar_t szErrorPrev[cbErrMax];
@@ -1106,7 +1117,7 @@ BOOL PDB1::savePdbStream()
 }
 
 
-BOOL PDB1::loadPdbStream(MSF *pmsf, const wchar_t *wszPDB, EC *pec,  __out_ecount_opt(cchErrMax) wchar_t *wszError, size_t cchErrMax)
+BOOL PDB1::loadPdbStream(MSF *pmsf, const wchar_t *wszPDB, EC *pec, wchar_t *wszError, size_t cchErrMax)
 {
     PDBLOG_FUNC();
     MTS_ASSERT_SINGLETHREAD();
@@ -1226,6 +1237,11 @@ void PDB1::setLastError(EC ec, const char *szErr)
 void PDB1::setLastError(EC ec, const wchar_t *wszErr)
 {
     pPDBError->SetLastError(ec, wszErr);
+    if (ec >= 0 && ec < _countof(szPDBErrors)) {
+        printf("PDB1 Error: %ws\n", szPDBErrors[ec]);
+        //printf("Press any key to continue...\n");
+        //_getch();
+    }
 }
 
 
@@ -1278,7 +1294,7 @@ void PDB1::setCorruptTypePoolError(PDB * ppdbFrom)
     }
 }
 
-EC PDB1::QueryLastErrorExW( __out_ecount_opt(cchMax) wchar_t *wszError, size_t cchMax)
+EC PDB1::QueryLastErrorExW( wchar_t *wszError, size_t cchMax)
 {
     return pPDBError->QueryLastError(wszError, cchMax);
 }
@@ -1300,7 +1316,7 @@ SZ PDB1::QueryPDBName(char szPDB[PDB_MAX_PATH])
 }
 
 
-wchar_t *PDB1::QueryPDBNameExW(__out_ecount(cchMax) wchar_t *wszPDB, size_t cchMax)
+wchar_t *PDB1::QueryPDBNameExW(wchar_t *wszPDB, size_t cchMax)
 {
     PDBLOG_FUNC();
     // MTS NOTE: wszPDBName is assigned at the constructor only, will never change
@@ -1393,7 +1409,7 @@ AGE PDB1::QueryAge()
 }
 
 
-BOOL PDB1::CreateDBI(SZ_CONST szTarget, OUT DBI** ppdbi)
+BOOL PDB1::CreateDBI(SZ_CONST szTarget, /*OUT*/DBI** ppdbi)
 {
     PDBLOG_FUNC();
     MTS_PROTECT(m_csForDBI);
@@ -1424,14 +1440,14 @@ BOOL PDB1::CreateDBI(SZ_CONST szTarget, OUT DBI** ppdbi)
 }
 
 
-BOOL PDB1::OpenDBI(SZ_CONST szTarget, SZ_CONST szMode, OUT DBI** ppdbi)
+BOOL PDB1::OpenDBI(SZ_CONST szTarget, SZ_CONST szMode, /*OUT*/DBI** ppdbi)
 {
     PDBLOG_FUNC();
     return OpenDBIEx(szTarget, szMode, ppdbi);
 }
 
 
-BOOL PDB1::OpenDBIEx(SZ_CONST szTarget, SZ_CONST szMode, OUT DBI** ppdbi, PfnFindDebugInfoFile pfn_)
+BOOL PDB1::OpenDBIEx(SZ_CONST szTarget, SZ_CONST szMode, /*OUT*/DBI** ppdbi, PfnFindDebugInfoFile pfn_)
 {
     PDBLOG_FUNC();
     BOOL    fWrite = !!strchr(szMode, *pdbWrite);
@@ -1493,7 +1509,7 @@ BOOL PDB1::internal_CloseDBI() {
     return TRUE;                    // tell DBI1::Close to really close itself              
 }
 
-BOOL PDB1::OpenTpi(SZ_CONST szMode, OUT TPI** pptpi) {
+BOOL PDB1::OpenTpi(SZ_CONST szMode, /*OUT*/TPI** pptpi) {
     PDBLOG_FUNC();
     MTS_PROTECT(m_csForTPI);
 
@@ -1523,7 +1539,7 @@ BOOL PDB1::OpenTpi(SZ_CONST szMode, OUT TPI** pptpi) {
     }
 }
 
-BOOL PDB1::OpenIpi(SZ_CONST szMode, OUT TPI** ppipi) {
+BOOL PDB1::OpenIpi(SZ_CONST szMode, /*OUT*/TPI** ppipi) {
     PDBLOG_FUNC();
     MTS_PROTECT(m_csForIPI);
 
@@ -2031,7 +2047,7 @@ BOOL PDBCopy::DoCopy()
 }
 
 
-EC PDBCopy::QueryLastErrorExW(__out_ecount_opt(cchMax) wchar_t *wszError, size_t cchMax)
+EC PDBCopy::QueryLastErrorExW(wchar_t *wszError, size_t cchMax)
 {
     if (wszError != NULL && cchMax > 0 && wszErrLast != NULL) {
         wcsncpy_s(wszError, cchMax, wszErrLast, _TRUNCATE);
@@ -2080,7 +2096,7 @@ BYTE * PDBCopy::PBNextRecord(BYTE *pb, enum DEBUG_S_SUBSECTION_TYPE e)
             return pb;
 
         case DEBUG_S_SYMBOLS:
-            return pbEndSym((PSYM) pb);
+            return (BYTE *)pbEndSym((PSYM) pb);
 
         default:
             assert(false);
@@ -2191,7 +2207,11 @@ BOOL PDBCopy::CreateStringSubSection(enum DEBUG_S_SUBSECTION_TYPE e, BYTE *pbIn,
     return TRUE;
 }
 
-
+BOOL PDBCopy::CopySubsection(Mod *pmodIn, Mod *pmodOut, enum DEBUG_S_SUBSECTION_TYPE e)
+{
+    unimplemented; return { };
+}
+#if 0
 BOOL PDBCopy::CopySubsection(Mod *pmodIn, Mod *pmodOut, enum DEBUG_S_SUBSECTION_TYPE e)
 {
     Mod1::PfnQuerySubsection pfn = NULL;
@@ -2261,7 +2281,7 @@ BOOL PDBCopy::CopySubsection(Mod *pmodIn, Mod *pmodOut, enum DEBUG_S_SUBSECTION_
 
     return TRUE;
 }
-
+#endif
 
 BOOL PDBCopy::BuildImodToIsectCoffMap()
 {
@@ -2609,6 +2629,8 @@ BOOL PDBCopy::CopyMods()
         return FALSE;
     }
 
+    unimplemented;
+#if 0
     PfnPDBCopyReportProgress pfnProgress = NULL;
 
     if ((dwCopyFilter & copyCustomModSyms) != 0) {
@@ -2628,6 +2650,7 @@ BOOL PDBCopy::CopyMods()
             return FALSE;
         }
     }
+#endif
 
     pmodIn = NULL;
 
@@ -2675,10 +2698,11 @@ BOOL PDBCopy::CopyMods()
 
         rgpmodIn[imod] = pmodIn;
         rgpmodOut[imod] = pmodOut;
-
-        if (pfnProgress != NULL) {
-            pfnProgress(pvClientContext, imod, cMods);
-        }
+        
+        // @@@ uncomment
+        //if (pfnProgress != NULL) {
+        //    pfnProgress(pvClientContext, imod, cMods);
+        //}
     }
 
     // Copy seccontribs. This is necessary because debuggers may depend
@@ -2978,7 +3002,13 @@ BOOL PDBCopy::CopyDbgtype(DBGTYPE dbgtype)
     return fRet;
 }
 
+BOOL PDBCopy::ProcessModInMiniPDB(Mod *pmodIn, Mod *pmodOut)
+{
+    unimplemented;
+    return FALSE;
+}
 
+#if 0
 BOOL PDBCopy::ProcessModInMiniPDB(Mod *pmodIn, Mod *pmodOut)
 {
     // Callbacks to client for private symbols and types
@@ -3142,7 +3172,7 @@ BOOL PDBCopy::ProcessModInMiniPDB(Mod *pmodIn, Mod *pmodOut)
 
     return TRUE;
 }
-
+#endif
 
 BOOL PDBCopy::RegisterPDBMapping()
 {
@@ -3150,6 +3180,8 @@ BOOL PDBCopy::RegisterPDBMapping()
         return TRUE;
     }
 
+    unimplemented;
+#if 0
     PfnPDBCopyFilterPdbMappings pfnFilter = NULL;
 
     assert(pfnPdbCopyQueryCallback != NULL);
@@ -3193,6 +3225,7 @@ BOOL PDBCopy::RegisterPDBMapping()
     }
 
     fPdbMappingRegistered = true;
+#endif
     return TRUE;
 }
 

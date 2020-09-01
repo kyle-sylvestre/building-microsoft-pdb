@@ -62,7 +62,7 @@ struct POOL { // allocation pool
     size_t  cbTotal;
 
     POOL() {
-        assert(bitcount(cbAlignVal) == 1);
+        //assert(bitcount(cbAlignVal) == 1); @@@
         init();
     }
     ~POOL() {

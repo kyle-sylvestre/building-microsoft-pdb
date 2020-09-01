@@ -15,7 +15,9 @@
 #define STRICT
 #define WIN32_LEAN_AND_MEAN
 #include "windows.h"
-#include "_winnt2.h"
+//#include "_winnt2.h"
+//#include <windef.h>
+//#include <winnt.h>
 
 #ifndef IMAGE_FILE_MACHINE_POWERPCBE
 #define IMAGE_FILE_MACHINE_POWERPCBE         0x01F2  // IBM PowerPC Big-Endian
@@ -161,7 +163,8 @@ void LongUsage()
 void Usage()
 {
     StdOutPuts(summaryUsage);
-
+    StdOutPuts(L"Press any key to exit...");
+    _getch();
     exit(1);
 }
 
@@ -1609,6 +1612,8 @@ DWORD GetOffSection(IMAGE_FILE_HEADER_EX const& hdr) {
     return sizeof(hdr);
 }
 
+void DumpObjFileSections(DWORD offSection, DWORD numberOfSections); //@@@
+
 template<typename IMAGE_FILE_HEADER_T>
 void DumpObjFile()
 {
@@ -2019,6 +2024,7 @@ void DumpUnknown(const wchar_t *szFilename)
                 _read(exefile, &guid, sizeof(guid)) != sizeof(guid)) {
                 Fatal(L"Invalid anonmyous object");
             }
+            assert(false); // @@@
             if (memcmp(&guid, &EXTENDED_COFF_OBJ_GUID, sizeof(guid)) != 0) {
                 Fatal(L"Invalid anonmyous object");
             }
@@ -2135,7 +2141,7 @@ bool fReadAt(FILE *fp, DWORD off, DWORD cb, void *pv)
     if (fseek(fp, (long)off, SEEK_SET) != 0) {
         return false;
     }
-
+    
     DWORD cbRead = (DWORD)fread(pv, 1, cb, fp);
     return cbRead == cb;
 }
@@ -2145,7 +2151,8 @@ HRESULT ReadCodeViewDebugData(void *pvClient, unsigned long *pcbData, void *pvDa
     CLIENT *pClient = (CLIENT *)pvClient;
     wchar_t *szFileName = pClient->szFileName;
 
-    FILE *fp = _wfsopen(szFileName, L"r", _SH_DENYWR);
+    //FILE *fp = _wfsopen(szFileName, L"r", _SH_DENYWR);
+    FILE *fp = _wfsopen(szFileName, L"rb", _SH_DENYWR); //@@@ rb
 
     if (fp == NULL) {
         return E_FAIL;
@@ -2324,7 +2331,7 @@ PDBCALLBACK PDBCALL PfnDumpQueryCallback(void *, POVC povc)
         case povcNotifyOpenPDB :
             return (PDBCALLBACK) &DumpNotifyOpenPDB;
 
-#if 0
+#if 1 //@@@
         case povcReadCodeViewDebugData:
             return (PDBCALLBACK) &ReadCodeViewDebugData;
 
@@ -2336,9 +2343,31 @@ PDBCALLBACK PDBCALL PfnDumpQueryCallback(void *, POVC povc)
     return 0;
 }
 
+void TrimFileFromPath(wchar_t *wstr)
+{
+    size_t len = lstrlenW(wstr);
+    for (int i = len - 1; i >= 0; i--)
+    {
+        if (wstr[i] == L'\\') {
+            wstr[i] = L'\0';
+            break;
+        }
+    }
+}
 
 int __cdecl wmain(int argc, __in_ecount(argc) wchar_t *argv[])
 {
+    //TrimFileFromPath(argv[0]);
+    //wchar_t *filepath = argv[0];
+    // Custom args 
+    const wchar_t  *customargs[] = {
+        argv[0],
+        L"-pdbpath",
+        L"gorgon.pdb",
+        nullptr // need for cmd line check
+    };
+    argv = (wchar_t **)customargs;
+    argc = _countof(customargs) - 1;
 #ifdef  _M_IX86
     // Enable access to the System32 directory without remapping to SysWow64
 
@@ -2647,7 +2676,7 @@ int __cdecl wmain(int argc, __in_ecount(argc) wchar_t *argv[])
 
     _wmakepath_s(szFilename, _countof(szFilename), szDrive, szDir, szFName, (szExt[0] == '\0') ? L".exe" : szExt);
 
-    CLIENT client;
+    CLIENT client = {};
 
     client.szDbgPath = NULL;
     client.cbCv = 0;
@@ -2657,15 +2686,31 @@ int __cdecl wmain(int argc, __in_ecount(argc) wchar_t *argv[])
 
     EC ec;
     PDB *ppdb;
+    //wchar_t *szPDBName = rgarg[1];
+    int iarg;
 
-    BOOL fPdb = PDB::OpenValidate5(szFilename,
-                                   NULL,
-                                   &client,
-                                   &PfnDumpQueryCallback,
-                                   &ec,
-                                   NULL,
-                                   0,
-                                   &ppdb);
+    wchar_t szError[cbErrMax];
+
+    //@@@
+    bool fCanHandleDbgData = !PDB::ExportValidateInterface(PDBIntv50a);
+    //bool fCanHandleDbgData = true;
+
+    wchar_t szPdbPath[PDB_MAX_PATH];
+
+    // @@@
+    BOOL fPdb = PDB::Open2W(szFilename, pdbRead, &ec, szError, cbErrMax, &ppdb);
+    //if(!fPdb)
+    
+
+    //BOOL fPdb = PDB::OpenValidate5(szFilename,
+    //                               NULL,
+    //                               &client,
+    //                               &PfnDumpQueryCallback,
+    //                               &ec,
+    //                               NULL,
+    //                               0,
+    //                               &ppdb);
+
 
     if (fPdb) {
         DumpPdb(ppdb);

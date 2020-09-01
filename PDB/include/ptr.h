@@ -30,9 +30,10 @@ public:
         return *this;
     }
     AutoPtr<T, Trait>& operator=(AutoPtr<T, Trait> const& t) {
-        if (pt_ != NULL) {
-            Trait<T>::CopyAddRef(pt);
-        }
+        // @@@
+        //if (pt_ != NULL) {
+        //    Trait<T>::CopyAddRef(pt);
+        //}
         release();
         pt = t.pt;
         return *this;
