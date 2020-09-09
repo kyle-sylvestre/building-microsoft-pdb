@@ -1,8 +1,12 @@
-# BUILDING THE SOLUTION
--Only works on x64 Debug for now <br />
--To build cvdump.exe, add all source files from cvdump folder and remove pdbdump.cpp from solution <br />
+
+# BUILDING CVDUMP
+-Set configuration to x64 debug <br />
+-Add all source files from cvdump folder and remove pdbdump.cpp from solution <br />
  	NOTE: cvdump needs executables to be build with MSVC Compiler flag /Z7 (embedded debugging symbols) <br /> <br />
--To build pdbdump.exe, ensure pdbdump is the only file with wmain (project is initially configured for building pdbdump.exe) <br />
+	
+# BUILDING PDBDUMP
+-Set configuration to x64 debug <br />
+-Ensure pdbdump is the only file with wmain (project is initially configured for building pdbdump.exe) <br />
 -All Unimplemented functions can be found in custom.h and missing/missing_impl.cpp (need to merge these together at some point)
 
 
