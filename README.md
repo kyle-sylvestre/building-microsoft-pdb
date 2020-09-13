@@ -2,7 +2,7 @@
 # BUILDING CVDUMP
 -Set configuration to x64 debug <br />
 -Add all source files from cvdump folder and remove pdbdump.cpp from solution <br />
- 	NOTE: cvdump needs executables to be build with MSVC Compiler flag /Z7 (embedded debugging symbols) <br /> <br />
+
 	
 # BUILDING PDBDUMP
 -Set configuration to x64 debug <br />
